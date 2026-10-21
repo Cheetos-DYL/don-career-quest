@@ -41,7 +41,7 @@ h1{white-space:pre-line}
 </style>
 </head>
 <body>
-<canvas id="world" aria-label="A straight, top-down driving road with numbered life-timeline checkpoints." role="img"></canvas>
+<canvas id="world" aria-label="First-person view down a straight highway with numbered life-timeline checkpoints." role="img"></canvas>
 <div class="hud">
   <header class="topbar">
     <div class="brand" aria-label="Don Lee, life story">
@@ -146,7 +146,7 @@ so far.</h1>
     {id:'jlr',code:'13',short:'JLR',title:'A move to the UK, then global',kicker:'APR 2023–PRESENT · JLR',text:'When Rochelle wanted to move to the UK, I was fortunate to find a role at JLR. I now work with local partners on home charging, public charging and smart-energy services across 70 markets in Asia Pacific, the Middle East, Africa and Latin America.'}
   ];
   stations.forEach((station,index)=>station.distance=index*850);
-  const ROAD_SCALE=1.35;
+  const LANDMARK_VIEW=2600;
   const player={lane:0,distance:0,speed:0};
   const pressed = new Set();
   const visited = new Set();
@@ -177,50 +177,47 @@ so far.</h1>
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);canvas.style.width=width+'px';canvas.style.height=height+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
     draw();
   }
-  function roadBounds(){const roadWidth=Math.min(width*.82,760);return{left:(width-roadWidth)/2,right:(width+roadWidth)/2,width:roadWidth,center:width/2}}
   function polygon(points,fill,stroke=null,lineWidth=1){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}}
   function roundedRect(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill()}
+  function projectDistance(ahead){const horizon=height*.28,depth=1/(1+ahead/360);return{depth,y:horizon+(height-horizon)*depth,half:width*(.035+.46*depth),center:width*.5-player.lane*width*.17*depth}}
   function drawGround(){
-    const g=ctx.createLinearGradient(0,0,0,height);g.addColorStop(0,'#294b36');g.addColorStop(1,'#102a25');ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
-    const scroll=player.distance*ROAD_SCALE;
-    for(let y=(scroll%150)-150;y<height;y+=150){ctx.fillStyle='#d7e6b11c';ctx.fillRect(0,y,width,3)}
+    const horizon=height*.28,sky=ctx.createLinearGradient(0,0,0,horizon);sky.addColorStop(0,'#102839');sky.addColorStop(.62,'#397381');sky.addColorStop(1,'#d2bd8e');ctx.fillStyle=sky;ctx.fillRect(0,0,width,horizon);
+    const sun=ctx.createRadialGradient(width*.72,horizon*.42,2,width*.72,horizon*.42,height*.34);sun.addColorStop(0,'#fff1ca99');sun.addColorStop(1,'#fff1ca00');ctx.fillStyle=sun;ctx.fillRect(0,0,width,horizon*1.2);
+    ctx.fillStyle='#294b3d';ctx.fillRect(0,horizon,width,height-horizon);
+    ctx.beginPath();ctx.moveTo(0,horizon+height*.035);ctx.quadraticCurveTo(width*.16,horizon-height*.015,width*.32,horizon+height*.025);ctx.quadraticCurveTo(width*.48,horizon+height*.07,width*.66,horizon+.01*height);ctx.quadraticCurveTo(width*.83,horizon-height*.02,width,horizon+height*.04);ctx.lineTo(width,horizon+height*.16);ctx.lineTo(0,horizon+height*.16);ctx.closePath();ctx.fillStyle='#355649';ctx.fill();
   }
   function drawTrack(){
-    const r=roadBounds(),shoulder=r.width*.055,scroll=player.distance*ROAD_SCALE;
-    ctx.fillStyle='#b6b19a';ctx.fillRect(r.left-shoulder,0,r.width+shoulder*2,height);
-    const asphalt=ctx.createLinearGradient(r.left,0,r.right,0);asphalt.addColorStop(0,'#293239');asphalt.addColorStop(.5,'#414a50');asphalt.addColorStop(1,'#293239');ctx.fillStyle=asphalt;ctx.fillRect(r.left,0,r.width,height);
-    ctx.fillStyle='#e9e5ca';ctx.fillRect(r.left+shoulder*.35,0,Math.max(2,shoulder*.18),height);ctx.fillRect(r.right-shoulder*.53,0,Math.max(2,shoulder*.18),height);
-    const dash=48,spacing=104,offset=scroll%spacing;
-    for(const lane of [1,2]){const x=r.left+r.width*lane/3;ctx.fillStyle='#eeeeddcc';for(let y=offset-spacing;y<height;y+=spacing)ctx.fillRect(x-2,y,4,dash)}
-    const postOffset=scroll%166;
-    for(let y=postOffset-166;y<height;y+=166){for(const side of [-1,1]){const x=side<0?r.left-shoulder*.5:r.right+shoulder*.5;ctx.fillStyle='#e8dca9';ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#e85d53';ctx.fillRect(x-2,y+4,4,5)}}
+    const horizon=height*.28,farHalf=width*.035,nearHalf=width*.49,nearCenter=width*.5-player.lane*width*.17;
+    polygon([[width*.5-farHalf-width*.018,horizon],[width*.5+farHalf+width*.018,horizon],[nearCenter+nearHalf,height],[nearCenter-nearHalf,height]],'#b8b39b');
+    polygon([[width*.5-farHalf,horizon],[width*.5+farHalf,horizon],[nearCenter+nearHalf*.96,height],[nearCenter-nearHalf*.96,height]],'#323a40');
+    ctx.strokeStyle='#ecebd5';ctx.lineWidth=Math.max(2,width*.004);ctx.beginPath();ctx.moveTo(width*.5-farHalf,horizon);ctx.lineTo(nearCenter-nearHalf*.96,height);ctx.moveTo(width*.5+farHalf,horizon);ctx.lineTo(nearCenter+nearHalf*.96,height);ctx.stroke();
+    const spacing=68,offset=player.distance%spacing;
+    for(const lane of [-1,1])for(let ahead=spacing-offset;ahead<LANDMARK_VIEW;ahead+=spacing){
+      const a=projectDistance(ahead),b=projectDistance(ahead+30),f=lane/3,x1=a.center+a.half*f,x2=b.center+b.half*f,w1=Math.max(1.4,a.half*.018),w2=Math.max(1.4,b.half*.018);
+      polygon([[x1-w1,a.y],[x1+w1,a.y],[x2+w2,b.y],[x2-w2,b.y]],'#f1f0dc');
+    }
+    const postSpacing=125,postOffset=player.distance%postSpacing;
+    for(let ahead=postSpacing-postOffset;ahead<Math.min(LANDMARK_VIEW,1800);ahead+=postSpacing){
+      const p=projectDistance(ahead),size=2+p.depth*16;for(const side of [-1,1]){const x=p.center+side*(p.half+width*(.018+.1*p.depth));ctx.fillStyle='#e9ddaf';ctx.fillRect(x-size*.22,p.y-size,size*.44,size*2);ctx.fillStyle='#e96558';ctx.fillRect(x-size*.4,p.y-size,size*.8,size*.4)}
+    }
   }
   function drawSpeedLines(){
-    if(player.speed<120)return;const r=roadBounds(),alpha=Math.min(.45,(player.speed-120)/500);ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle='#eff8e6';ctx.lineWidth=2;
-    for(let i=0;i<12;i++){const side=i%2?1:-1,y=(i*97+player.distance*ROAD_SCALE*2.5)%height,x=side<0?r.left-12:r.right+12;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+18+player.speed*.12);ctx.stroke()}
+    if(player.speed<180)return;const amount=Math.min(.55,(player.speed-180)/1100);ctx.save();ctx.globalAlpha=amount;ctx.strokeStyle='#eef8e8';ctx.lineWidth=1.5;
+    for(let i=0;i<18;i++){const side=i%2?1:-1,y=(i*83+player.distance*2.8)%height,x=width*.5+side*(width*.43+(i%4)*width*.018);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+side*(3+player.speed*.012),y+12+player.speed*.055);ctx.stroke()}
     ctx.restore();
   }
   function drawCheckpoint(station){
-    const ahead=station.distance-player.distance,carY=height*(width<=900?.60:.73),y=carY-ahead*ROAD_SCALE,r=roadBounds();
-    if(ahead<0||y<-30||y>height+30)return;
-    const gateW=r.width*.86,gateX=r.center-gateW/2;
-    ctx.fillStyle='#102b30';ctx.fillRect(gateX,y-12,gateW,24);ctx.strokeStyle='#c7f27a';ctx.lineWidth=2;ctx.strokeRect(gateX,y-12,gateW,24);
-    ctx.fillStyle='#c7f27a';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${Math.max(11,Math.min(18,width*.035))}px system-ui`;ctx.fillText(`${station.code}  ·  ${station.short}`,r.center,y);ctx.textBaseline='alphabetic';
-    ctx.fillStyle='#f1f4e8';ctx.fillRect(gateX,y-20,6,40);ctx.fillRect(gateX+gateW-6,y-20,6,40);
+    const ahead=station.distance-player.distance;if(ahead<0||ahead>LANDMARK_VIEW)return;const p=projectDistance(ahead),gateH=height*(.012+.16*p.depth),gateW=p.half*1.85,left=p.center-gateW/2,top=p.y-gateH*.72;
+    ctx.fillStyle='#102b30';ctx.fillRect(left,top,gateW,gateH*.34);ctx.strokeStyle='#c7f27a';ctx.lineWidth=Math.max(1,p.depth*2.5);ctx.strokeRect(left,top,gateW,gateH*.34);
+    ctx.fillStyle='#c7f27a';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${Math.max(8,Math.min(17,7+p.depth*14))}px system-ui`;ctx.fillText(`${station.code}  ·  ${station.short}`,p.center,top+gateH*.17);ctx.textBaseline='alphabetic';
+    ctx.fillStyle='#e6ead7';ctx.fillRect(left,p.y-gateH*.5,Math.max(2,p.depth*7),gateH*.9);ctx.fillRect(left+gateW-Math.max(2,p.depth*7),p.y-gateH*.5,Math.max(2,p.depth*7),gateH*.9);
   }
-  function drawCar(){
-    const r=roadBounds(),cx=r.center+player.lane*r.width*.31,cy=height*(width<=900?.60:.73),w=Math.max(38,Math.min(r.width*.19,62)),h=w*1.7;
-    ctx.fillStyle='#071513a8';ctx.beginPath();ctx.ellipse(cx+2,cy+5,w*.5,h*.46,0,0,Math.PI*2);ctx.fill();
-    roundedRect(cx-w*.48,cy-h*.32,w*.13,h*.22,4,'#10191d');roundedRect(cx+w*.35,cy-h*.32,w*.13,h*.22,4,'#10191d');roundedRect(cx-w*.48,cy+h*.12,w*.13,h*.22,4,'#10191d');roundedRect(cx+w*.35,cy+h*.12,w*.13,h*.22,4,'#10191d');
-    const paint=ctx.createLinearGradient(cx-w/2,cy, cx+w/2,cy);paint.addColorStop(0,'#8fa5a0');paint.addColorStop(.45,'#f5f0dc');paint.addColorStop(1,'#bcc9c1');
-    polygon([[cx-w*.34,cy+h*.46],[cx-w*.46,cy+h*.28],[cx-w*.48,cy-h*.2],[cx-w*.29,cy-h*.43],[cx,cy-h*.5],[cx+w*.29,cy-h*.43],[cx+w*.48,cy-h*.2],[cx+w*.46,cy+h*.28],[cx+w*.34,cy+h*.46]],paint,'#f4f2e6',2);
-    polygon([[cx-w*.32,cy-h*.2],[cx-w*.22,cy-h*.36],[cx,cy-h*.41],[cx+w*.22,cy-h*.36],[cx+w*.32,cy-h*.2],[cx+w*.28,cy+h*.02],[cx-w*.28,cy+h*.02]],'#18333b','#83d8d0',1.5);
-    polygon([[cx-w*.3,cy+h*.08],[cx+w*.3,cy+h*.08],[cx+w*.27,cy+h*.3],[cx-w*.27,cy+h*.3]],'#a9b8b0','#e7eadc',1);
-    roundedRect(cx-w*.34,cy-h*.46,w*.18,h*.035,3,'#fff2ba');roundedRect(cx+w*.16,cy-h*.46,w*.18,h*.035,3,'#fff2ba');roundedRect(cx-w*.34,cy+h*.39,w*.18,h*.035,3,'#ff6960');roundedRect(cx+w*.16,cy+h*.39,w*.18,h*.035,3,'#ff6960');
+  function drawDashboard(){
+    polygon([[0,height],[0,height*.965],[width*.22,height*.925],[width*.78,height*.925],[width,height*.965],[width,height]],'#10191d');
+    ctx.strokeStyle='#526264';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(width*.18,height*.968);ctx.quadraticCurveTo(width*.5,height*.9,width*.82,height*.968);ctx.stroke();
   }
   function draw(time=0){
-    if(!ctx||!width||!height)return;drawGround();drawTrack();drawSpeedLines();
-    const next=stations[timelineIndex];if(next)drawCheckpoint(next);drawCar();$('distance').textContent=`${Math.round(player.speed)} KM/H`;
+    if(!ctx||!width||!height)return;drawGround();drawTrack();drawSpeedLines();const next=stations[timelineIndex];if(next)drawCheckpoint(next);drawDashboard();$('distance').textContent=`${Math.round(player.speed)} KM/H`;
   }
   function toast(text){const t=$('toast');t.textContent=text;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),1900)}
   function updateProgress(){
@@ -337,8 +334,8 @@ so far.</h1>
   function move(dt){
     const steer=(pressed.has('ArrowRight')||pressed.has('d')||pressed.has('D')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')||pressed.has('A')?1:0);
     const accelerating=pressed.has('ArrowUp')||pressed.has('w')||pressed.has('W'),braking=pressed.has('ArrowDown')||pressed.has('s')||pressed.has('S');
-    const topSpeed=pressed.has('Shift')?340:260;
-    if(accelerating)player.speed=Math.min(topSpeed,player.speed+115*dt);else player.speed=Math.max(0,player.speed-(braking?220:22)*dt);
+    const topSpeed=pressed.has('Shift')?950:600;
+    if(accelerating)player.speed=Math.min(topSpeed,player.speed+700*dt);else player.speed=Math.max(0,player.speed-(braking?1400:90)*dt);
     player.distance+=player.speed*dt/3.6;player.lane=Math.max(-.88,Math.min(.88,player.lane+steer*1.35*dt));
     const next=stations[timelineIndex],remaining=next?next.distance-player.distance:Infinity;nearIndex=next&&remaining>=0&&remaining<130?timelineIndex:-1;
     $('connectButton').classList.toggle('is-ready',nearIndex>=0);if(nearIndex>=0)$('connectButton').textContent=`Read ${next.short} · Enter`;

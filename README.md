@@ -1,6 +1,6 @@
 # Charge Quest — Don Lee
 
-A self-contained life-timeline driving game with a bird’s-eye, straight highway, fast scrolling road markings, steering, boost and 13 chronological story checkpoints. Settings lets you edit the introduction and every chapter, add a photo to each milestone, or restore the original text. Text and photos stay in that browser (text in localStorage, photos in IndexedDB); photos are limited to 8 MB each.
+A self-contained life-timeline driving game with a first-person view down a straight highway, fast scrolling road markings, steering and boost, reaching 950 km/h. It has 13 chronological story checkpoints. Settings lets you edit the introduction and every chapter, add a photo to each milestone, or restore the original text. Text and photos stay in that browser (text in localStorage, photos in IndexedDB); photos are limited to 8 MB each.
 
 ## Test locally
 
