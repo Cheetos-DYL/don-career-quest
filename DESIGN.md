@@ -83,9 +83,9 @@ components:
 
 ## Overview
 
-**Design read:** preserve the full-screen drive-to-discover pattern, compact HUD, map panel, and keyboard/touch controls. Use a first-person view down a straight, wide highway—not a loop—with rapid acceleration, lane steering, braking, and boost. Keep the 13 chronological life milestones as gates along the road. Settings edits the introduction and all chapter copy and adds/removes one photo per milestone; browser-local text and photo storage includes a restore-defaults action for text.
+**Design read:** preserve the full-screen drive-to-discover pattern, compact HUD, map panel, and keyboard/touch controls. Use an actual WebGL third-person chase camera behind a modeled car on a straight, endless road—not a loop. Give the driver rapid acceleration, lateral steering, braking, and boost; let scenery and road markings move toward the camera. Keep the 13 chronological life milestones as gates along the road. Settings edits the introduction and all chapter copy and adds/removes one photo per milestone; browser-local text and photo storage includes a restore-defaults action for text.
 
-Reference: [Bruno Simon Folio 2025](https://github.com/brunosimon/folio-2025), with its full-screen driving world, exploration-first introduction, map, and interactive points. This version keeps the drive-to-discover idea and adapts it to a 13-stop life timeline; the code, copy, artwork, and interface here are original. The lighter Canvas 2D scene keeps the game phone-friendly without rebuilding the reference’s 3D renderer or physics system.
+Reference: [Bruno Simon Folio 2025](https://github.com/brunosimon/folio-2025), a full-screen 3D driving world. This game uses the same broad drive-to-discover idea but renders its own WebGL scene and original low-poly car/road geometry, with simpler arcade movement and Don’s 13-stop life timeline; it does not reuse the reference’s code, logos, copy, or models.
 
 ## Colors
 
@@ -102,7 +102,7 @@ Use the system sans-serif stack so the game remains fast and works offline. Disp
 
 ## Layout
 
-The canvas is the primary surface and occupies the viewport. In driver POV, the straight road narrows toward a horizon and lane markings rush toward the lower edge; no third-person car sprite is drawn. A compact HUD holds identity, speed, and mission progress; story/settings panels stay scrollable. **Falsifiable test:** at 375px wide, the road, HUD, settings editor, and touch controls remain usable without horizontal scrolling.
+The canvas is the primary surface and occupies the viewport. WebGL perspective and a depth buffer render a third-person car, straight road, lane markings, trees, barriers, and checkpoint gates. The chase camera follows the car; higher speed widens its field of view and scrolls scenery faster. A compact HUD holds identity, speed, and mission progress; story/settings panels stay scrollable. **Falsifiable test:** at 375px wide, the car, road, HUD, settings editor, and touch controls remain usable without horizontal scrolling.
 
 ## Elevation & Depth
 
@@ -114,7 +114,7 @@ Use rounded-but-not-pill panels (8–24px radii), crisp geometric roads, simple 
 
 ## Components
 
-- **Driving canvas:** first-person straight highway; W/↑ accelerates, S/↓ brakes, A/D or ←/→ steers, Shift boosts. Speed caps: 600 km/h normally, 950 km/h while boosting.
+- **Driving canvas:** native WebGL 3D, third-person chase view; W/↑ accelerates, S/↓ brakes, A/D or ←/→ steers across the road, Shift boosts. Speed caps: 650 km/h normally, 1,000 km/h while boosting.
 - **Mission HUD:** shows the next chronological chapter and route progress.
 - **Story popup:** opens automatically when the car reaches the next timeline stop; story text reveals progressively. The map remains a direct-reading alternative.
 - **Touch controls:** visible on narrow screens and large enough for thumb use.
