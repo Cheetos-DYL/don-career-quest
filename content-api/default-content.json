@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "intro": {
+    "title": "Edit me",
+    "text": "Edit me"
+  },
+  "stops": [
+    { "id": "stop-01", "code": "01", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-02", "code": "02", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-03", "code": "03", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-04", "code": "04", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-05", "code": "05", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-06", "code": "06", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-07", "code": "07", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-08", "code": "08", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-09", "code": "09", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-10", "code": "10", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-11", "code": "11", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-12", "code": "12", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" },
+    { "id": "stop-13", "code": "13", "short": "SHORT", "title": "Title", "kicker": "DATE · PLACE", "text": "Story text", "photo": "" }
+  ]
+}

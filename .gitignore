@@ -1,1 +1,5 @@
-.DS_Store
+node_modules/
+dist/
+.env
+content-api/node_modules/
+content-api/content-store.json
