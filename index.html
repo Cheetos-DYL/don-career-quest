@@ -213,8 +213,8 @@ so far.</h1>
   }
   function drawRoad(){
     const travel=(player.distance*WORLD_SCALE)%TRACK_LOOP;
-    for(let i=0;i<8;i++){
-      const z=wrapZ(50+i*100,travel);
+    for(let i=0;i<16;i++){
+      const j=i%8,z=wrapZ(50+j*100,travel)+(i<8?0:TRACK_LOOP);
       drawBox(i%2?C.grass:C.grassAlt,0,-.52,z,220,.45,100);
       drawBox(C.shoulder,0,-.23,z,25,.16,100);drawBox(C.road,0,-.2,z,22,.16,100);
       for(const side of [-1,1]){
@@ -227,8 +227,8 @@ so far.</h1>
   }
   function drawScenery(){
     const travel=(player.distance*WORLD_SCALE)%TRACK_LOOP;
-    for(let i=0;i<8;i++)for(const side of [-1,1]){
-      const z=wrapZ(28+i*96,travel),x=side*(18+(i%3)*2),h=2.5+(i%3)*.35;
+    for(let i=0;i<16;i++)for(const side of [-1,1]){
+      const j=i%8,z=wrapZ(28+j*96,travel)+(i<8?0:TRACK_LOOP),x=side*(18+(j%3)*2),h=2.5+(j%3)*.35;
       drawBox(C.trunk,x,.9,z,.8,1.8,.8);drawBox(i%2?C.tree:C.treeLight,x,1.9+h*.42,z,3.6,h,3.4);
       drawBox(C.trunk,x+side*1.9,.8,z-36,.75,1.6,.75);drawBox(C.tree,x+side*1.9,1.8,z-36,2.8,2.8,2.7);
     }
@@ -243,16 +243,17 @@ so far.</h1>
     drawBox(C.car,x,.48,0,2.5,.65,4.25,yaw);drawBox(C.car,x,.81,-1.2,2.3,.28,1.65,yaw);
     drawBox(C.glass,x,1.22,-.08,1.75,.78,1.85,yaw);drawBox(C.metal,x,1.65,-.08,1.82,.16,1.95,yaw);drawBox(C.metal,x,.28,2.05,2.7,.22,.32,yaw);
     for(const side of [-1,1]){
-      drawWheel(x,.18,-1.35,side,yaw);drawWheel(x,.18,1.35,side,yaw);
+      drawWheel(x,.34,-1.35,side,yaw);drawWheel(x,.34,1.35,side,yaw);
       drawBox(C.tail,x+side*.83,.63,2.18,.36,.26,.1,yaw);drawBox(C.lamp,x+side*.58,.24,-2.13,.28,.12,.08,yaw);
     }
   }
   function drawSpeedStreaks(){
     if(player.speed<250)return;const travel=(player.distance*WORLD_SCALE)%TRACK_LOOP,amount=Math.min(.8,(player.speed-250)/700);
-    for(let i=0;i<8;i++)for(const side of [-1,1]){const z=wrapZ(12+i*27,travel),x=side*(14+(i%3)*2);drawBox(C.streak,x,1.8+(i%4)*.6,z,.08,.08,2+amount*9)}
+    for(let i=0;i<30;i++)for(const side of [-1,1]){const z=wrapZ(12+i*27,travel),x=side*(14+(i%3)*2);drawBox(C.streak,x,1.8+(i%4)*.6,z,.08,.08,2+amount*9)}
   }
   function draw(time=0){
     if(!gl||!width||!height)return;const speedRatio=Math.min(1,player.speed/1000),carX=player.lane*7.5,shake=speedRatio*.055;
+    // ponytail: whole-scene per-frame upload, no frustum culling; add culling/instancing only if mobile FPS drops
     projectionMatrix=perspective((58+speedRatio*28)*Math.PI/180,width/Math.max(1,height),.1,900);
     const eye=[carX*.56+Math.sin(time*.016)*shake,5.3+Math.sin(time*.022)*shake,11.5];viewMatrix=lookAt(eye,[carX*.72,.8,-22],[-player.steering*.035,1,0]);
     meshBatch.length=0;drawRoad();drawScenery();const next=stations[timelineIndex];if(next)drawCheckpoint(next);drawSpeedStreaks();drawCar();
@@ -353,8 +354,8 @@ so far.</h1>
     const el=$('storyText'),card=$('storyCard');
     el.textContent='';card.classList.add('is-typing');
     if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=text;card.classList.remove('is-typing');return}
-    let i=0;
-    typeTimer=setInterval(()=>{i=Math.min(i+2,text.length);el.textContent=text.slice(0,i);if(i===text.length){clearInterval(typeTimer);typeTimer=0;card.classList.remove('is-typing')}},22);
+    let i=0;const step=Math.max(2,Math.ceil(text.length/200));
+    typeTimer=setInterval(()=>{i=Math.min(i+step,text.length);el.textContent=text.slice(0,i);if(i===text.length){clearInterval(typeTimer);typeTimer=0;card.classList.remove('is-typing')}},22);
   }
   function openStory(index,markVisited){
     const s=stations[index];if(!s)return;
@@ -366,29 +367,31 @@ so far.</h1>
   function closePanels(){clearInterval(typeTimer);typeTimer=0;$('storyCard').classList.remove('is-typing');clearStoryPhoto();panels.forEach(p=>p.hidden=true);paused=false;}
   function triggerTimeline(){
     const station=stations[timelineIndex];if(!station||player.distance<station.distance)return;
+    if(visited.has(station.id)){timelineIndex++;triggerTimeline();return}
     const index=timelineIndex++;openStory(index,true);$('announcer').textContent=`Checkpoint ${index+1}: ${stations[index].title}.`;
   }
   function start(){playing=true;paused=false;$('intro').hidden=true;$('startButton').blur();toast('The open road is yours.');triggerTimeline();}
   function reset(){visited.clear();player.distance=0;player.lane=0;player.speed=0;nearIndex=-1;timelineIndex=0;closePanels();updateProgress();toast('Drive restarted.');}
   function move(dt){
-    const steer=(pressed.has('ArrowRight')||pressed.has('d')||pressed.has('D')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')||pressed.has('A')?1:0);
-    const accelerating=pressed.has('ArrowUp')||pressed.has('w')||pressed.has('W'),braking=pressed.has('ArrowDown')||pressed.has('s')||pressed.has('S');
+    const steer=(pressed.has('ArrowRight')||pressed.has('d')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')?1:0);
+    const accelerating=pressed.has('ArrowUp')||pressed.has('w'),braking=pressed.has('ArrowDown')||pressed.has('s');
     const topSpeed=pressed.has('Shift')?1000:650;
     if(accelerating)player.speed=Math.min(topSpeed,player.speed+800*dt);else player.speed=Math.max(0,player.speed-(braking?1600:70)*dt);
     player.distance+=player.speed*dt/3.6;player.lane=Math.max(-1,Math.min(1,player.lane+steer*1.7*dt));player.steering+=(steer-player.steering)*Math.min(1,dt*9);
     const next=stations[timelineIndex],remaining=next?next.distance-player.distance:Infinity;nearIndex=next&&remaining>=0&&remaining<130?timelineIndex:-1;
-    $('connectButton').classList.toggle('is-ready',nearIndex>=0);if(nearIndex>=0)$('connectButton').textContent=`Read ${next.short} · Enter`;
+    $('connectButton').classList.toggle('is-ready',nearIndex>=0);$('connectButton').textContent=nearIndex>=0?`Read ${next.short} · Enter`:'Read this stop · Enter';
     triggerTimeline();
   }
   function keyDown(e){
-    const key=e.key;
-    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(key))e.preventDefault();
+    const key=e.key.length===1?e.key.toLowerCase():e.key;
+    if(e.target?.closest?.('input,textarea,select')){if(key==='Escape')closePanels();return}
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(key))e.preventDefault();
     if(key==='Escape'){closePanels();return}
-    if(key==='m'||key==='M'){openPanel($('mapPanel'));return}
+    if(key==='m'){openPanel($('mapPanel'));return}
     if(key==='Enter'&&playing&&!paused){if(nearIndex>=0)openStory(nearIndex,true);return}
-    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D','Shift'].includes(key)&&playing&&!paused){pressed.add(key);}
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','Shift'].includes(key)&&playing&&!paused){pressed.add(key);}
   }
-  function keyUp(e){pressed.delete(e.key);}
+  function keyUp(e){const key=e.key.length===1?e.key.toLowerCase():e.key;pressed.delete(key)}
   window.addEventListener('keydown',keyDown);window.addEventListener('keyup',keyUp);window.addEventListener('blur',()=>pressed.clear());window.addEventListener('resize',resize);
   document.querySelectorAll('[data-key]').forEach(button=>{
     const key=button.dataset.key;
@@ -405,7 +408,7 @@ so far.</h1>
   $('settingsStories').addEventListener('change',handlePhotoChange);
   $('settingsStories').addEventListener('click',handlePhotoRemove);
   $('resetTextButton').addEventListener('click',resetTextSettings);
-  $('connectButton').addEventListener('click',()=>{if(nearIndex>=0)openStory(nearIndex,true)});
+  $('connectButton').addEventListener('click',()=>{if(nearIndex>=0&&!paused)openStory(nearIndex,true)});
   $('storyMapButton').addEventListener('click',()=>openPanel($('mapPanel')));
   $('resetButton').addEventListener('click',reset);
   $('profileRouteButton').addEventListener('click',()=>{closePanels();start()});
