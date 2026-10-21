@@ -83,7 +83,7 @@ components:
 
 ## Overview
 
-**Design read:** turn the same 13-stop life timeline into a long, wide, dead-straight highway. Keep the drive-to-discover story popups, but replace the tiny isometric track with a fast perspective road, visible lane markings, checkpoint gantries, scenery, a clearer car, speedometer, steering, throttle, brake, and boost. Keep it self-contained in Canvas 2D; no copied assets or full 3D engine.
+**Design read:** preserve the full-screen drive-to-discover pattern, compact HUD, map panel, and keyboard/touch controls. Expand the four career stops into 13 chronological life milestones, from birth and childhood moves through school, military service, exchanges, working holiday, degree, and career. Each numbered beacon opens its story in order; unknown years stay relative. Keep the Canvas 2D world and existing interface, adding no unrelated features or copied assets/code/copy.
 
 Reference: [Bruno Simon Folio 2025](https://github.com/brunosimon/folio-2025), with its full-screen driving world, exploration-first introduction, map, and interactive points. This version keeps the drive-to-discover idea and adapts it to a 13-stop life timeline; the code, copy, artwork, and interface here are original. The lighter Canvas 2D scene keeps the game phone-friendly without rebuilding the reference’s 3D renderer or physics system.
 
@@ -102,22 +102,22 @@ Use the system sans-serif stack so the game remains fast and works offline. Disp
 
 ## Layout
 
-The canvas is the primary surface and occupies the viewport. A compact top HUD holds identity and milestone progress; the speedometer and mission panel stay readable over the broad road, and touch controls sit at the lower edge. Keep interface copy brief so it does not obscure the checkpoint. **Falsifiable test:** at 375px wide, the car, full-width road, HUD, mission panel, and all five touch controls remain inside the viewport without horizontal scrolling or blocking checkpoint text.
+The canvas is the primary surface and occupies the viewport. A compact top HUD holds identity and mission progress; a contextual landmark panel stays near the bottom edge; controls sit in a separate touch-friendly strip. Keep interface copy brief so it does not cover the driving route. **Falsifiable test:** at 375px wide, the HUD, mission, and touch controls remain inside the viewport without horizontal scrolling or covering the landmark text.
 
 ## Elevation & Depth
 
-Create a clear perspective: distant horizon, layered hills, broad three-lane asphalt road, solid edge lines, animated dashed lane markers, roadside trees and reflective posts, and a numbered gantry for the next milestone. Use a fixed rear-view car whose position moves between lanes while the road scrolls beneath it. The track stays straight; only depth and speed animate.
+Create depth with isometric ground planes, road shadows, overlapping terrain, and small parallax. Avoid photographic scenery and heavy post-processing; all landmarks are original Canvas shapes.
 
 ## Shapes
 
-Use a wide straight perspective road, crisp lane markings, simple checkpoint gantries, roadside silhouettes, and an original rear-view EV shape. Keep hit targets at least 44px.
+Use rounded-but-not-pill panels (8–24px radii), crisp geometric roads, simple blocky charger/vehicle silhouettes, and small circular progress markers. Keep hit targets at least 44px.
 
 ## Components
 
-- **Driving canvas:** long straight perspective highway; W/↑ accelerates, A/D or ←/→ steers, S/↓ brakes, Shift boosts.
-- **Mission HUD:** speedometer plus next milestone and visited progress.
-- **Checkpoint gate:** draws the next stop ahead; passing it opens the story popup in order.
-- **Touch controls:** accelerate, brake, steer and boost buttons on phones.
+- **Driving canvas:** responds to WASD/arrows; keyboard controls are advertised before play.
+- **Mission HUD:** shows the next chronological chapter and route progress.
+- **Story popup:** opens automatically when the car reaches the next timeline stop; story text reveals progressively. The map remains a direct-reading alternative.
+- **Touch controls:** visible on narrow screens and large enough for thumb use.
 - **Reduced motion:** respect `prefers-reduced-motion`; game movement remains user-controlled.
 
 ## Do's and Don'ts

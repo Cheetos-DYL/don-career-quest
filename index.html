@@ -10,10 +10,9 @@
 <style>
 :root{color-scheme:dark;--ink:#071b20;--deep:#0b2528;--surface:#102b30;--raised:#15343a;--line:#36535a;--text:#f1f4e8;--muted:#a5b7ae;--lime:#c7f27a;--aqua:#83d8d0;--warm:#ffb86b;--shadow:0 18px 60px #031012a8;--radius:18px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--ink);color:var(--text)}button{font:inherit;color:inherit}button:focus-visible{outline:3px solid var(--lime);outline-offset:3px}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.hud{position:fixed;inset:0;pointer-events:none}.hud>*{pointer-events:auto}.topbar{position:absolute;inset:18px 22px auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}.monogram{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--lime);color:var(--ink);font-weight:950;letter-spacing:-.08em}.brand-copy{display:grid;gap:2px}.brand-copy strong{font-size:.88rem;letter-spacing:.1em}.brand-copy small,.eyebrow{color:var(--muted);font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.top-actions{display:flex;align-items:center;gap:8px}.counter{display:flex;align-items:center;gap:9px;border:1px solid #ffffff26;border-radius:999px;background:#071b20bd;padding:9px 13px;font-size:.76rem;font-weight:800;letter-spacing:.07em}.counter b{color:var(--lime);font-size:.9rem}.icon-button{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #ffffff2a;border-radius:14px;background:#071b20c9;color:var(--text);cursor:pointer}.icon-button:hover{border-color:var(--lime);color:var(--lime)}.icon-button span{font-size:.72rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.mission{position:absolute;left:22px;bottom:22px;width:min(330px,calc(100vw - 44px));padding:16px 18px;border:1px solid #ffffff26;border-radius:var(--radius);background:#071b20e8;box-shadow:var(--shadow);backdrop-filter:blur(12px)}.mission-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.mission h2{margin:7px 0 5px;font-size:1.04rem;letter-spacing:-.025em}.mission p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.45}.progress{height:5px;margin:13px 0 0;overflow:hidden;border-radius:5px;background:#ffffff1a}.progress span{display:block;width:0;height:100%;border-radius:inherit;background:var(--lime);transition:width .3s ease}.connect-button{display:none;margin-top:12px;padding:9px 12px;border:0;border-radius:10px;background:var(--lime);color:var(--ink);font-size:.75rem;font-weight:900;letter-spacing:.04em;cursor:pointer}.connect-button.is-ready{display:inline-flex}.desktop-help{position:absolute;right:22px;bottom:22px;display:flex;align-items:center;gap:8px;color:#e2e9ddc9;font-size:.72rem}.key{display:inline-grid;min-width:27px;height:27px;place-items:center;border:1px solid #ffffff35;border-radius:7px;background:#071b20b3;color:var(--text);font-size:.68rem;font-weight:900}.help-line{display:flex;gap:6px;align-items:center}.touch-controls{position:absolute;right:18px;bottom:18px;display:none;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:5px;touch-action:none}.touch-controls button{border:1px solid #ffffff38;border-radius:13px;background:#071b20c9;color:var(--text);font-size:1.05rem;font-weight:900;touch-action:none;user-select:none}.touch-controls button:active,.touch-controls button.is-down{background:var(--lime);color:var(--ink)}.touch-controls [data-key="ArrowUp"]{grid-column:2}.touch-controls [data-key="ArrowLeft"]{grid-column:1;grid-row:2}.touch-controls [data-key="ArrowDown"]{grid-column:2;grid-row:2}.touch-controls [data-key="ArrowRight"]{grid-column:3;grid-row:2}.screen{position:fixed;inset:0;z-index:5;display:grid;place-items:center;padding:22px;background:#05171bc4;backdrop-filter:blur(7px)}.screen[hidden],.panel[hidden]{display:none!important}.intro-card,.panel-card{width:min(560px,100%);border:1px solid #ffffff29;border-radius:24px;background:#0b2528f5;box-shadow:var(--shadow)}.intro-card{padding:clamp(22px,5vw,44px)}.intro-card .eyebrow{color:var(--lime)}h1{max-width:10ch;margin:14px 0 12px;font-size:clamp(2.6rem,8vw,5.2rem);line-height:.92;letter-spacing:-.075em}.intro-card>p{max-width:44ch;margin:0;color:#d6e0d5;font-size:1rem;line-height:1.6}.intro-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.primary-button,.secondary-button,.panel-close{min-height:46px;padding:0 16px;border:0;border-radius:13px;font-size:.76rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.primary-button{background:var(--lime);color:var(--ink)}.primary-button:hover{background:#d9ff9b}.secondary-button,.panel-close{border:1px solid #ffffff2b;background:var(--raised);color:var(--text)}.secondary-button:hover,.panel-close:hover{border-color:var(--aqua);color:var(--aqua)}.intro-foot{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:24px;color:var(--muted);font-size:.75rem}.panel{position:fixed;z-index:6;inset:auto 20px 20px auto;width:min(430px,calc(100vw - 32px));max-height:min(80vh,680px);overflow:auto}.panel-card{padding:22px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.panel h2{margin:7px 0 10px;font-size:1.65rem;line-height:1.08;letter-spacing:-.05em}.panel p{color:#d6e0d5;font-size:.94rem;line-height:1.6}.panel .eyebrow{color:var(--lime)}.panel-close{min-width:42px;padding:0;font-size:1rem}.stop-list{display:grid;gap:8px;margin-top:18px}.stop-item{width:100%;display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:12px;text-align:left;padding:12px;border:1px solid #ffffff22;border-radius:14px;background:#ffffff08;cursor:pointer}.stop-item:hover{border-color:var(--lime);background:#c7f27a0e}.stop-number{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#15343a;color:var(--lime);font-size:.72rem;font-weight:900}.stop-item strong{display:block;font-size:.86rem}.stop-item small{display:block;margin-top:3px;color:var(--muted);font-size:.73rem;line-height:1.35}.stop-status{color:var(--aqua);font-size:.68rem;font-weight:800;text-transform:uppercase}.profile-facts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}.fact{padding:12px;border:1px solid #ffffff1e;border-radius:13px;background:#ffffff08}.fact b{display:block;color:var(--lime);font-size:.77rem}.fact span{display:block;margin-top:5px;color:var(--muted);font-size:.75rem;line-height:1.4}.panel-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.toast{position:fixed;left:50%;top:82px;z-index:4;transform:translateX(-50%);padding:9px 14px;border:1px solid #ffffff2d;border-radius:999px;background:#071b20e8;color:var(--text);font-size:.76rem;font-weight:800;opacity:0;pointer-events:none;transition:opacity .2s}.toast.visible{opacity:1}
 @media(min-width:701px) and (max-width:900px){.mission{width:280px}.panel{right:18px;width:min(360px,calc(100vw - 36px))}}
-@media(max-width:700px){.topbar{inset:12px 12px auto}.brand{gap:8px}.monogram{width:36px;height:36px;border-radius:11px}.brand-copy strong{font-size:.72rem}.brand-copy small{font-size:.57rem}.top-actions{gap:6px}.counter{padding:8px 10px;font-size:.66rem}.counter .counter-label{display:none}.icon-button{min-width:42px;min-height:42px;border-radius:12px}.icon-button span{display:none}.mission{left:12px;bottom:126px;width:min(300px,calc(100vw - 24px));padding:12px 14px}.mission h2{font-size:.92rem}.mission p{font-size:.76rem}.desktop-help{display:none}.touch-controls{display:grid}.panel{inset:auto 12px 12px;width:calc(100vw - 24px);max-height:76vh}.intro-card{border-radius:20px}.intro-card>p{font-size:.92rem}.toast{top:64px}.profile-facts{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.topbar{inset:12px 12px auto}.brand{gap:8px}.monogram{width:36px;height:36px;border-radius:11px}.brand-copy strong{font-size:.72rem}.brand-copy small{font-size:.57rem}.top-actions{gap:6px}.counter{padding:8px 10px;font-size:.66rem}.counter .counter-label{display:none}.icon-button{min-width:42px;min-height:42px;border-radius:12px}.icon-button span{display:none}.mission{left:12px;bottom:126px;width:min(300px,calc(100vw - 24px));padding:12px 14px}.mission h2{font-size:.92rem}.mission p{font-size:.76rem}.desktop-help{display:none}.touch-controls{display:grid}.panel{inset:56px 12px auto;width:calc(100vw - 24px);max-height:34vh}.intro-card{border-radius:20px}.intro-card>p{font-size:.92rem}.toast{top:64px}.profile-facts{grid-template-columns:1fr 1fr}}
 @media(max-width:390px){.brand-copy small{max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mission{bottom:118px}.touch-controls{right:12px;bottom:12px;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
-.speed-readout{min-width:78px;text-align:right;color:var(--lime);font-size:.95rem;font-weight:950;letter-spacing:.015em}.touch-controls [data-key="Shift"]{grid-column:3;grid-row:1;font-size:.6rem;letter-spacing:.01em}
 #storyCard.is-typing #storyText::after{content:'▍';color:var(--lime);animation:story-caret .7s steps(2,end) infinite}@keyframes story-caret{to{visibility:hidden}}
 </style>
 </head>
@@ -32,19 +31,18 @@
     </div>
   </header>
   <section class="mission" aria-label="Current mission">
-    <div class="mission-head"><span class="eyebrow">LIFE TIMELINE</span><span class="speed-readout" id="distance">0 KM/H</span></div>
+    <div class="mission-head"><span class="eyebrow">LIFE TIMELINE</span><span class="eyebrow" id="distance">READY</span></div>
     <h2 id="missionTitle">The beginning</h2>
     <p id="missionText">The first memory opens when you start the route.</p>
     <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
     <button class="connect-button" id="connectButton" type="button">Read this stop · Enter</button>
   </section>
-  <div class="desktop-help" aria-label="Keyboard controls"><span class="key">W/↑</span><span>accelerate</span><span class="key">A/D</span><span>steer</span><span class="key">SHIFT</span><span>boost</span><span class="key">ENTER</span><span>read stop</span><span class="key">M</span><span>timeline</span></div>
+  <div class="desktop-help" aria-label="Keyboard controls"><span class="key">WASD</span><span class="key">↑↓←→</span><span>drive</span><span class="key">SHIFT</span><span>boost</span><span class="key">ENTER</span><span>read stop</span><span class="key">M</span><span>map</span></div>
   <div class="touch-controls" aria-label="Touch driving controls">
-    <button type="button" data-key="ArrowUp" aria-label="Accelerate">↑</button>
-    <button type="button" data-key="ArrowLeft" aria-label="Steer left">←</button>
-    <button type="button" data-key="ArrowDown" aria-label="Brake">↓</button>
-    <button type="button" data-key="ArrowRight" aria-label="Steer right">→</button>
-    <button type="button" data-key="Shift" aria-label="Boost">BOOST</button>
+    <button type="button" data-key="ArrowUp" aria-label="Drive forward">↑</button>
+    <button type="button" data-key="ArrowLeft" aria-label="Drive left">←</button>
+    <button type="button" data-key="ArrowDown" aria-label="Drive backward">↓</button>
+    <button type="button" data-key="ArrowRight" aria-label="Drive right">→</button>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -56,7 +54,7 @@
     <h1 id="introTitle">My road<br>so far.</h1>
     <p>I was born in Korea, grew up across Asia, and studied and worked in Europe before finding my way into EV charging. Drive through the places, people and choices that shaped the road so far.</p>
     <div class="intro-actions"><button class="primary-button" id="startButton" type="button">Start at the beginning</button><button class="secondary-button" id="readButton" type="button">Read my profile</button></div>
-    <div class="intro-foot"><span><b class="key">W/↑</b> accelerate</span><span><b class="key">A/D</b> steer</span><span><b class="key">S/↓</b> brake</span><span><b class="key">SHIFT</b> boost</span><span>Touch controls on mobile</span></div>
+    <div class="intro-foot"><span><b class="key">WASD</b> or arrows to drive</span><span><b class="key">ENTER</b> at a stop to read</span><span>Touch controls on mobile</span></div>
   </div>
 </section>
 
@@ -92,113 +90,105 @@
   const ctx = canvas.getContext('2d');
   const $ = (id) => document.getElementById(id);
   const stations = [
-    {id:'early-years',distance:0,code:'01',short:'EARLY YEARS',title:'Born in Korea; moved early',kicker:'1991–AGE 4 · KOREA → HONG KONG → SINGAPORE',text:'I was born in South Korea on 27 October 1991, about two weeks overdue. While waiting, my mom gave up and started making kimchi. At 15 days old, I moved to Hong Kong with my family; my father was there as an expatriate. Before I was four, I had also lived in Singapore, then we returned to Korea.'},
-    {id:'korea-school',distance:400,code:'02',short:'SOUTH KOREA',title:'Back to Korea',kicker:'AGE 4–2002 · SOUTH KOREA',text:'I returned to South Korea and went to elementary school there through fifth grade. In 2002, my parents moved us to Beijing.'},
-    {id:'beijing',distance:800,code:'03',short:'BEIJING',title:'Beijing and high school',kicker:'2002–2009 · BEIJING, CHINA',text:'I moved with my parents in fifth grade and stayed in Beijing through high school, graduating in 2009. In 2006–07, I was an exchange student in the United States, spending time in Butte, Montana, and Atlanta, Georgia.'},
-    {id:'university',distance:1200,code:'04',short:'UNIVERSITY',title:'Back to university',kicker:'2010–2016 · SEOUL, SOUTH KOREA',text:'I returned to South Korea in 2010 and studied Business Administration at Sungkyunkwan University, a Samsung-sponsored university. My years there included military service, exchanges in Europe and a working holiday in Sweden before I returned to finish my degree.'},
-    {id:'military',distance:1600,code:'05',short:'MILITARY',title:'Military police, kitchen work',kicker:'2012–2013 · SOUTH KOREA',text:'I served in the Military Police, but worked in the kitchen. I ordered ingredients, planned menus and handled the accounts while helping feed about 550 people per meal. It taught me how a small food operation runs day to day.'},
-    {id:'alicante',distance:2000,code:'06',short:'ALICANTE',title:'A semester in Spain',kicker:'2013 · ALICANTE, SPAIN',text:'I returned to university and spent an exchange semester in Alicante. I met Rochelle there; she’s my wife now.'},
-    {id:'paris',distance:2400,code:'07',short:'PARIS',title:'Another exchange, in Paris',kicker:'AFTER ALICANTE · PARIS, FRANCE',text:'After a semester in Alicante, I went to Paris for another exchange semester. After that, I took a break from university and headed to Sweden.'},
-    {id:'stockholm',distance:2800,code:'08',short:'STOCKHOLM',title:'A working holiday in Sweden',kicker:'AFTER PARIS · STOCKHOLM, SWEDEN',text:'After Paris, I paused university and took a working holiday in Stockholm. I spent nearly six months working in a Chinese kitchen while Rochelle finished university in Manchester.'},
-    {id:'degree',distance:3200,code:'09',short:'DEGREE',title:'Back to finish my degree',kicker:'AFTER STOCKHOLM · 2016 · SOUTH KOREA',text:'When the working holiday ended, I returned to Sungkyunkwan University and finished my Business Administration degree in 2016. I was ready to start working.'},
-    {id:'mercedes',distance:3600,code:'10',short:'MERCEDES-BENZ',title:'My first job in automotive',kicker:'NOV 2016–JUL 2020 · MERCEDES-BENZ',text:'I joined Mercedes-Benz Korea as an intern, working on the E-Class launch and a Salesforce CRM rollout. I then moved into after-sales systems and model launches, representing Aftersales in an EV task force. Seeing EVs up close made me especially curious about charging and how it changes everyday car use.'},
-    {id:'tesla',distance:4000,code:'11',short:'TESLA',title:'Following my interest in charging',kicker:'AUG 2020–OCT 2021 · TESLA',text:'Charging was the part of EVs I had become most interested in, so I was lucky to join Tesla’s charging team. I worked on AC charging for homes, workplaces and destination sites, including setting up the home-charging program with installer partners and warranty policies.'},
-    {id:'tmap',distance:4400,code:'12',short:'TMAP MOBILITY',title:'From one automaker to the wider network',kicker:'NOV 2021–APR 2023 · TMAP MOBILITY',text:'At Tesla, I had seen charging from an automaker’s side. At TMAP Mobility, I joined the founding eMSP team to build the service across the wider mobility network—partnering with CPOs and connecting their data to TMAP’s platform.'},
-    {id:'jlr',distance:4800,code:'13',short:'JLR',title:'A move to the UK, then global',kicker:'APR 2023–PRESENT · JLR',text:'When Rochelle wanted to move to the UK, I was fortunate to find a role at JLR. I now work with local partners on home charging, public charging and smart-energy services across 70 markets in Asia Pacific, the Middle East, Africa and Latin America.'}
+    {id:'early-years',x:0,y:0,code:'01',short:'EARLY YEARS',title:'Born in Korea; moved early',kicker:'1991–AGE 4 · KOREA → HONG KONG → SINGAPORE',text:'I was born in South Korea on 27 October 1991, about two weeks overdue. While waiting, my mom gave up and started making kimchi. At 15 days old, I moved to Hong Kong with my family; my father was there as an expatriate. Before I was four, I had also lived in Singapore, then we returned to Korea.'},
+    {id:'korea-school',x:5,y:0,code:'02',short:'SOUTH KOREA',title:'Back to Korea',kicker:'AGE 4–2002 · SOUTH KOREA',text:'I returned to South Korea and went to elementary school there through fifth grade. In 2002, my parents moved us to Beijing.'},
+    {id:'beijing',x:10,y:0,code:'03',short:'BEIJING',title:'Beijing and high school',kicker:'2002–2009 · BEIJING, CHINA',text:'I moved with my parents in fifth grade and stayed in Beijing through high school, graduating in 2009. In 2006–07, I was an exchange student in the United States, spending time in Butte, Montana, and Atlanta, Georgia.'},
+    {id:'university',x:14,y:4,code:'04',short:'UNIVERSITY',title:'Back to university',kicker:'2010–2016 · SEOUL, SOUTH KOREA',text:'I returned to South Korea in 2010 and studied Business Administration at Sungkyunkwan University, a Samsung-sponsored university. My years there included military service, exchanges in Europe and a working holiday in Sweden before I returned to finish my degree.'},
+    {id:'military',x:12,y:9,code:'05',short:'MILITARY',title:'Military police, kitchen work',kicker:'2012–2013 · SOUTH KOREA',text:'I served in the Military Police, but worked in the kitchen. I ordered ingredients, planned menus and handled the accounts while helping feed about 550 people per meal. It taught me how a small food operation runs day to day.'},
+    {id:'alicante',x:7,y:13,code:'06',short:'ALICANTE',title:'A semester in Spain',kicker:'2013 · ALICANTE, SPAIN',text:'I returned to university and spent an exchange semester in Alicante. I met Rochelle there; she’s my wife now.'},
+    {id:'paris',x:1,y:15,code:'07',short:'PARIS',title:'Another exchange, in Paris',kicker:'AFTER ALICANTE · PARIS, FRANCE',text:'After a semester in Alicante, I went to Paris for another exchange semester. After that, I took a break from university and headed to Sweden.'},
+    {id:'stockholm',x:-5,y:13,code:'08',short:'STOCKHOLM',title:'A working holiday in Sweden',kicker:'AFTER PARIS · STOCKHOLM, SWEDEN',text:'After Paris, I paused university and took a working holiday in Stockholm. I spent nearly six months working in a Chinese kitchen while Rochelle finished university in Manchester.'},
+    {id:'degree',x:-10,y:9,code:'09',short:'DEGREE',title:'Back to finish my degree',kicker:'AFTER STOCKHOLM · 2016 · SOUTH KOREA',text:'When the working holiday ended, I returned to Sungkyunkwan University and finished my Business Administration degree in 2016. I was ready to start working.'},
+    {id:'mercedes',x:-12,y:3,code:'10',short:'MERCEDES-BENZ',title:'My first job in automotive',kicker:'NOV 2016–JUL 2020 · MERCEDES-BENZ',text:'I joined Mercedes-Benz Korea as an intern, working on the E-Class launch and a Salesforce CRM rollout. I then moved into after-sales systems and model launches, representing Aftersales in an EV task force. Seeing EVs up close made me especially curious about charging and how it changes everyday car use.'},
+    {id:'tesla',x:-10,y:-3,code:'11',short:'TESLA',title:'Following my interest in charging',kicker:'AUG 2020–OCT 2021 · TESLA',text:'Charging was the part of EVs I had become most interested in, so I was lucky to join Tesla’s charging team. I worked on AC charging for homes, workplaces and destination sites, including setting up the home-charging program with installer partners and warranty policies.'},
+    {id:'tmap',x:-5,y:-7,code:'12',short:'TMAP MOBILITY',title:'From one automaker to the wider network',kicker:'NOV 2021–APR 2023 · TMAP MOBILITY',text:'At Tesla, I had seen charging from an automaker’s side. At TMAP Mobility, I joined the founding eMSP team to build the service across the wider mobility network—partnering with CPOs and connecting their data to TMAP’s platform.'},
+    {id:'jlr',x:2,y:-9,code:'13',short:'JLR',title:'A move to the UK, then global',kicker:'APR 2023–PRESENT · JLR',text:'When Rochelle wanted to move to the UK, I was fortunate to find a role at JLR. I now work with local partners on home charging, public charging and smart-energy services across 70 markets in Asia Pacific, the Middle East, Africa and Latin America.'}
   ];
-  const ROAD_VIEW=1000;
-  const player={lane:0,distance:0,speed:0};
+  const route = [{x:0,y:0},...stations.map(({x,y})=>({x,y})),{x:0,y:0}];
+  const trees = [[-7,-5],[-4,-9],[2,-9],[11,-8],[17,-4],[18,4],[12,10],[2,12],[-7,10],[-9,3],[-10,-2],[4,3],[10,5],[1,-3]];
+  const player = {x:0,y:0,angle:-Math.PI/4};
   const pressed = new Set();
   const visited = new Set();
-  let width=0,height=0,playing=false,nearIndex=-1,paused=false,last=0,toastTimer=0,typeTimer=0,timelineIndex=0;
+  let width=0,height=0,unit=14,playing=false,nearIndex=-1,paused=false,last=0,toastTimer=0,typeTimer=0,timelineIndex=0;
   const panels=[$('mapPanel'),$('storyPanel'),$('profilePanel')];
 
   function resize(){
     const dpr=Math.min(window.devicePixelRatio||1,2);
-    width=window.innerWidth;height=window.innerHeight;
+    width=window.innerWidth;height=window.innerHeight;unit=Math.max(6,Math.min(width/52,height/34,24));
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);canvas.style.width=width+'px';canvas.style.height=height+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
     draw();
   }
-  function roadAt(depth){const d=Math.max(0,Math.min(1,depth)),y=height*.32+(height*.98-height*.32)*d;return{y,half:width*(.075+.405*d)}}
+  function project(x,y){return [width*.5+(x-player.x-y+player.y)*unit*.72,height*.57+(x-player.x+y-player.y)*unit*.36]}
   function polygon(points,fill,stroke=null,lineWidth=1){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}}
   function line(points,color,lineWidth,dash=[]){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.strokeStyle=color;ctx.lineWidth=lineWidth;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(dash);ctx.stroke();ctx.setLineDash([])}
   function roundedRect(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill()}
 
-  function drawBackground(){
-    const horizon=height*.32;
-    const sky=ctx.createLinearGradient(0,0,0,horizon);sky.addColorStop(0,'#0a2230');sky.addColorStop(.65,'#29616b');sky.addColorStop(1,'#b0b987');ctx.fillStyle=sky;ctx.fillRect(0,0,width,horizon);
-    const glow=ctx.createRadialGradient(width*.76,horizon*.38,2,width*.76,horizon*.38,height*.42);glow.addColorStop(0,'#ffe5ae66');glow.addColorStop(1,'#ffe5ae00');ctx.fillStyle=glow;ctx.fillRect(0,0,width,horizon*1.3);
-    const ground=ctx.createLinearGradient(0,horizon,0,height);ground.addColorStop(0,'#71836a');ground.addColorStop(.28,'#345b4c');ground.addColorStop(1,'#102e2e');ctx.fillStyle=ground;ctx.fillRect(0,horizon,width,height-horizon);
-    ctx.beginPath();ctx.moveTo(0,horizon+height*.07);ctx.quadraticCurveTo(width*.12,horizon-height*.05,width*.25,horizon+height*.04);ctx.quadraticCurveTo(width*.38,horizon+height*.11,width*.52,horizon+height*.02);ctx.quadraticCurveTo(width*.72,horizon-height*.02,width*.84,horizon+height*.06);ctx.quadraticCurveTo(width*.94,horizon+height*.1,width,horizon+height*.03);ctx.lineTo(width,horizon+height*.24);ctx.lineTo(0,horizon+height*.24);ctx.closePath();ctx.fillStyle='#34584d';ctx.fill();
-    ctx.beginPath();ctx.moveTo(0,horizon+height*.12);ctx.quadraticCurveTo(width*.18,horizon+height*.04,width*.35,horizon+height*.14);ctx.quadraticCurveTo(width*.56,horizon+height*.2,width*.73,horizon+height*.1);ctx.quadraticCurveTo(width*.87,horizon+height*.04,width,horizon+height*.15);ctx.lineTo(width,horizon+height*.3);ctx.lineTo(0,horizon+height*.3);ctx.closePath();ctx.fillStyle='#41674f';ctx.fill();
+  function drawGround(){
+    ctx.fillStyle='#0a2023';ctx.fillRect(0,0,width,height);
+    const cx=Math.floor(player.x/4),cy=Math.floor(player.y/4);
+    for(let x=cx-22;x<=cx+22;x++)for(let y=cy-22;y<=cy+22;y++){
+      const a=project(x*4,y*4),b=project((x+1)*4,y*4),c=project((x+1)*4,(y+1)*4),d=project(x*4,(y+1)*4);
+      polygon([a,b,c,d],((x+y)&1)?'#10302e':'#12332f','#1c403b',.7);
+    }
+    // A thin horizon band keeps the world readable without hiding the route.
+    ctx.fillStyle='#0b2528';ctx.fillRect(0,0,width,Math.max(38,height*.12));
+    for(let i=-5;i<=5;i++){
+      const y=height*.15+i*unit*3.2; if(y<0||y>height)continue;
+      ctx.fillStyle=i%2?'#12302f':'#102c2b';ctx.fillRect(0,y,width,unit*1.15);
+    }
   }
   function drawRoad(){
-    const far=roadAt(0),near=roadAt(1),cx=width*.5;
-    const outerFar=far.half+width*.018,outerNear=near.half+width*.035;
-    polygon([[cx-outerFar,far.y],[cx+outerFar,far.y],[cx+outerNear,near.y],[cx-outerNear,near.y]],'#b1ad92');
-    const asphalt=ctx.createLinearGradient(0,far.y,0,height);asphalt.addColorStop(0,'#45505a');asphalt.addColorStop(.55,'#343d45');asphalt.addColorStop(1,'#242c34');
-    polygon([[cx-far.half,far.y],[cx+far.half,far.y],[cx+near.half,near.y],[cx-near.half,near.y]],asphalt);
-    line([[cx-far.half,far.y],[cx-near.half,near.y]],'#eef0d8',Math.max(1.5,width*.006));line([[cx+far.half,far.y],[cx+near.half,near.y]],'#eef0d8',Math.max(1.5,width*.006));
-    line([[cx-outerFar,far.y],[cx-outerNear,near.y]],'#5d6966',Math.max(2,width*.012));line([[cx+outerFar,far.y],[cx+outerNear,near.y]],'#5d6966',Math.max(2,width*.012));
-    const period=70,offset=player.distance%period;
-    for(let ahead=-offset;ahead<ROAD_VIEW;ahead+=period){
-      const start=Math.max(0,ahead),end=Math.min(ROAD_VIEW,ahead+27);if(end<=0||start>=ROAD_VIEW||end<=start)continue;
-      const d1=1-start/ROAD_VIEW,d2=1-end/ROAD_VIEW,p1=roadAt(d1),p2=roadAt(d2),dashWidth1=Math.max(1.2,width*(.0025+.006*d1)),dashWidth2=Math.max(1.2,width*(.0025+.006*d2));
-      for(const side of [-1,1])polygon([[cx+side*p1.half/3-dashWidth1/2,p1.y],[cx+side*p1.half/3+dashWidth1/2,p1.y],[cx+side*p2.half/3+dashWidth2/2,p2.y],[cx+side*p2.half/3-dashWidth2/2,p2.y]],'#e5e8d8');
+    const points=route.map(p=>project(p.x,p.y));
+    line(points,'#315b59',Math.max(12,unit*2.15));
+    line(points,'#183d3d',Math.max(8,unit*1.35));
+    line(points,'#83d8d055',Math.max(1,unit*.07),[unit*.34,unit*.24]);
+  }
+  function drawTree(x,y,index){
+    const [sx,sy]=project(x,y),s=Math.max(7,unit*.42),h=s*1.35;
+    ctx.fillStyle='#091d20';ctx.beginPath();ctx.ellipse(sx,sy+2,s*.82,s*.34,0,0,Math.PI*2);ctx.fill();
+    polygon([[sx-s*.65,sy-s*.1],[sx,sy-h],[sx+s*.67,sy-s*.1]],index%2?'#34735d':'#40816a','#68a77d',.8);
+    polygon([[sx-s*.48,sy-s*.02],[sx,sy-h*.72],[sx+s*.48,sy-s*.02]],'#5a9875');
+    ctx.fillStyle='#b8db91';ctx.fillRect(sx-s*.07,sy-s*.16,s*.14,s*.16);
+  }
+  function drawStation(station,index,time){
+    const [x,y]=project(station.x,station.y),done=visited.has(station.id),near=index===nearIndex;
+    const pulse=1+Math.sin(time/360+index)*.08;
+    ctx.fillStyle='#06161877';ctx.beginPath();ctx.ellipse(x,y+unit*.3,unit*1.18,unit*.5,0,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(x,y,unit*1.02*pulse,unit*.46*pulse,0,0,Math.PI*2);ctx.fillStyle=done?'#c7f27a20':'#83d8d01a';ctx.fill();ctx.strokeStyle=done?'#c7f2a8':'#83d8d0';ctx.lineWidth=near?3:1.5;ctx.stroke();
+    // A numbered beacon marks each autobiographical milestone.
+    const beaconY=y-unit*.9;
+    ctx.strokeStyle=done?'#c7f27a':'#83d8d0';ctx.lineWidth=Math.max(2,unit*.12);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,beaconY);ctx.stroke();
+    ctx.beginPath();ctx.arc(x,beaconY,Math.max(5,unit*.22),0,Math.PI*2);ctx.fillStyle=done?'#c7f27a':'#83d8d0';ctx.fill();
+    ctx.fillStyle=done?'#c7f27a':'#ffb86b';ctx.font=`900 ${Math.max(9,unit*.38)}px system-ui`;ctx.textAlign='center';ctx.fillText(station.code,x,beaconY-unit*.48);
+    if(near||done){
+      const label=station.short;ctx.font=`800 ${Math.max(9,Math.min(12,unit*.37))}px system-ui`;const tw=ctx.measureText(label).width+18;
+      roundedRect(x-tw/2,y-unit*2.15,tw,22,8,'#071b20e8');ctx.strokeStyle='#ffffff30';ctx.lineWidth=1;ctx.strokeRect(x-tw/2,y-unit*2.15,tw,22);
+      ctx.fillStyle=done?'#c7f27a':'#f1f4e8';ctx.fillText(label,x,y-unit*2.15+15);
     }
-    const railFar=far.half+width*.026,railNear=near.half+width*.05;
-    line([[cx-railFar,far.y],[cx-railNear,near.y]],'#bcc8bb',Math.max(2,width*.009));line([[cx+railFar,far.y],[cx+railNear,near.y]],'#bcc8bb',Math.max(2,width*.009));
-  }
-  function drawRoadside(){
-    const spacing=125,offset=player.distance%spacing,cx=width*.5;
-    for(let i=0;i<Math.ceil(ROAD_VIEW/spacing)+1;i++){
-      const ahead=i*spacing-offset;if(ahead<0||ahead>ROAD_VIEW)continue;
-      const depth=1-ahead/ROAD_VIEW,p=roadAt(depth),size=5+depth*34;
-      for(const side of [-1,1]){
-        const x=cx+side*(p.half+width*(.035+.17*depth)),y=p.y;
-        if(i%3===0){
-          ctx.fillStyle='#102a27';ctx.beginPath();ctx.ellipse(x,y+size*.04,size*.38,size*.12,0,0,Math.PI*2);ctx.fill();
-          polygon([[x-size*.48,y],[x,y-size],[x+size*.48,y]],i%2?'#2d5e4a':'#397056','#76a17a',Math.max(.5,depth));
-          polygon([[x-size*.34,y-size*.38],[x,y-size*1.25],[x+size*.34,y-size*.38]],'#4c8060');
-        }else{
-          const poleW=Math.max(2,depth*5),poleH=7+depth*24;ctx.fillStyle='#586660';ctx.fillRect(x-poleW/2,y-poleH,poleW,poleH);
-          ctx.fillStyle='#d8e5bb';ctx.fillRect(x-poleW*1.4,y-poleH,poleW*2.8,Math.max(2,depth*4));
-        }
-      }
-    }
-  }
-  function drawCheckpoint(station){
-    const ahead=station.distance-player.distance;if(ahead<0||ahead>ROAD_VIEW)return;
-    const depth=1-ahead/ROAD_VIEW,p=roadAt(depth),cx=width*.5,gateH=height*(.035+.18*depth),top=p.y-gateH;
-    const left=cx-p.half*1.1,right=cx+p.half*1.1,postW=Math.max(3,width*(.006+.008*depth));
-    roundedRect(left-postW/2,top,postW,gateH,postW/2,'#dce6d1');roundedRect(right-postW/2,top,postW,gateH,postW/2,'#dce6d1');
-    const signW=Math.min(width*.72,Math.max(96,p.half*1.65)),signH=13+depth*18,signX=cx-signW/2;
-    roundedRect(signX,top,signW,signH,Math.max(3,depth*7),'#102b30');ctx.strokeStyle='#c7f27a';ctx.lineWidth=Math.max(1,depth*2);ctx.strokeRect(signX,top,signW,signH);
-    ctx.fillStyle='#c7f27a';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${Math.max(8,Math.min(15,8+depth*7))}px system-ui`;ctx.fillText(`${station.code}  ·  ${station.short}`,cx,top+signH*.52);ctx.textBaseline='alphabetic';
-  }
-  function drawSpeedLines(){
-    if(player.speed<190)return;
-    const alpha=Math.min(.18,(player.speed-190)/900);ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle='#d9eee0';ctx.lineWidth=1;
-    for(let i=0;i<8;i++){const side=i%2?1:-1,seed=i*83, y=height*.38+((seed+player.distance*1.8)%(height*.48)),x=width*.5+side*(width*.35+(i%3)*width*.035);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+side*(5+(player.speed-190)*.07),y+12+(i%3)*8);ctx.stroke();}
-    ctx.restore();
   }
   function drawCar(){
-    const road=roadAt(1),cx=width*.5+player.lane*road.half*.72,cy=height*.79,w=Math.max(78,Math.min(width*.22,142)),h=w*.62;
-    ctx.fillStyle='#071513aa';ctx.beginPath();ctx.ellipse(cx,cy+h*.4,w*.55,h*.18,0,0,Math.PI*2);ctx.fill();
-    const paint=ctx.createLinearGradient(cx-w/2,cy-h/2,cx+w/2,cy+h/2);paint.addColorStop(0,'#f5f0dc');paint.addColorStop(.55,'#d7dfd2');paint.addColorStop(1,'#8fa5a0');
-    roundedRect(cx-w*.46,cy-h*.08,w*.12,h*.37,5,'#10191d');roundedRect(cx+w*.34,cy-h*.08,w*.12,h*.37,5,'#10191d');
-    polygon([[cx-w*.34,cy-h*.48],[cx+w*.34,cy-h*.48],[cx+w*.48,cy+h*.05],[cx+w*.4,cy+h*.42],[cx-w*.4,cy+h*.42],[cx-w*.48,cy+h*.05]],paint,'#f4f2e6',2);
-    polygon([[cx-w*.24,cy-h*.38],[cx+w*.24,cy-h*.38],[cx+w*.31,cy-h*.06],[cx-w*.31,cy-h*.06]],'#18333b','#83d8d0',1.5);
-    polygon([[cx-w*.3,cy+h*.03],[cx+w*.3,cy+h*.03],[cx+w*.35,cy+h*.26],[cx-w*.35,cy+h*.26]],'#a9b8b0','#e7eadc',1);
-    roundedRect(cx-w*.4,cy+h*.25,w*.13,h*.09,4,'#ff6960');roundedRect(cx+w*.27,cy+h*.25,w*.13,h*.09,4,'#ff6960');
-    roundedRect(cx-w*.18,cy+h*.31,w*.36,h*.07,4,'#34444a');ctx.fillStyle='#c7f27a';ctx.fillRect(cx-w*.12,cy+h*.33,w*.24,h*.025);
-    ctx.strokeStyle='#6e8581';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx-w*.37,cy+h*.08);ctx.lineTo(cx+w*.37,cy+h*.08);ctx.stroke();
+    const [x,y]=project(player.x,player.y);ctx.save();ctx.translate(x,y);ctx.rotate(player.angle);
+    ctx.fillStyle='#06141699';ctx.beginPath();ctx.ellipse(-unit*.05,unit*.34,unit*.95,unit*.42,0,0,Math.PI*2);ctx.fill();
+    const L=Math.max(29,unit*1.55),W=Math.max(18,unit*.88);
+    roundedRect(-L*.44,-W*.42,L*.88,W*.84,W*.24,'#102126');
+    polygon([[L*.48,0],[L*.25,-W*.43],[-L*.24,-W*.43],[-L*.46,-W*.24],[-L*.46,W*.24],[-L*.24,W*.43],[L*.25,W*.43]],'#f1f4e8','#071b20',1.4);
+    polygon([[L*.22,-W*.3],[-L*.14,-W*.3],[-L*.27,-W*.14],[-L*.27,W*.14],[-L*.14,W*.3],[L*.22,W*.3]],'#83d8d0');
+    ctx.fillStyle='#071b20';ctx.fillRect(-L*.31,-W*.57,L*.23,W*.13);ctx.fillRect(L*.08,-W*.57,L*.23,W*.13);ctx.fillRect(-L*.31,W*.44,L*.23,W*.13);ctx.fillRect(L*.08,W*.44,L*.23,W*.13);
+    ctx.fillStyle='#c7f27a';ctx.fillRect(L*.34,-W*.22,L*.1,W*.14);ctx.fillRect(L*.34,W*.08,L*.1,W*.14);
+    ctx.restore();
   }
   function draw(time=0){
     if(!ctx||!width||!height)return;
-    drawBackground();drawRoad();drawRoadside();
-    const next=stations[timelineIndex];if(next)drawCheckpoint(next);
-    drawSpeedLines();drawCar();$('distance').textContent=`${Math.round(player.speed)} KM/H`;
+    drawGround();drawRoad();
+    trees.forEach(([x,y],i)=>drawTree(x,y,i));
+    stations.forEach((s,i)=>drawStation(s,i,time));
+    drawCar();
+    if(playing){
+      const target=stations.findIndex(s=>!visited.has(s.id));
+      const next=target<0?null:stations[target];
+      if(next){const d=Math.hypot(next.x-player.x,next.y-player.y);$('distance').textContent=nearIndex===target?'IN RANGE':`${Math.round(d*12)} m AWAY`}
+      else $('distance').textContent='ROUTE COMPLETE';
+    }
   }
   function toast(text){const t=$('toast');t.textContent=text;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),1900)}
   function updateProgress(){
@@ -206,7 +196,7 @@
     $('progressBar').style.width=`${visited.size/stations.length*100}%`;
     const next=stations.find(s=>!visited.has(s.id));
     $('missionTitle').textContent=next?next.title:'The whole journey';
-    $('missionText').textContent=next?`Next checkpoint: ${next.short}. Hold ↑ or W to build speed.`:'You reached the end of the timeline. Keep cruising or restart the drive.';
+    $('missionText').textContent=next?`Next: ${next.short}. Its story opens when you arrive.`:'That’s the whole timeline. Want to take the drive again?';
     $('announcer').textContent=`${visited.size} of ${stations.length} milestones visited.`;
     if(!next)toast('Timeline complete — you made it.');
     updateStopList();
@@ -235,35 +225,36 @@
   function openPanel(panel){closePanels();panel.hidden=false;paused=true;}
   function closePanels(){clearInterval(typeTimer);typeTimer=0;$('storyCard').classList.remove('is-typing');panels.forEach(p=>p.hidden=true);paused=false;}
   function triggerTimeline(){
-    const station=stations[timelineIndex];
-    if(!station||player.distance<station.distance)return;
+    if(timelineIndex>=stations.length||nearIndex!==timelineIndex)return;
     const index=timelineIndex++;openStory(index,true);
-    $('announcer').textContent=`Checkpoint ${index+1}: ${stations[index].title}.`;
+    $('announcer').textContent=`Chapter ${index+1}: ${stations[index].title}.`;
   }
-  function start(){playing=true;paused=false;$('intro').hidden=true;$('startButton').blur();toast('The first memory is just ahead.');triggerTimeline();}
-  function reset(){visited.clear();player.distance=0;player.lane=0;player.speed=0;nearIndex=-1;timelineIndex=0;closePanels();updateProgress();toast('Drive restarted.');}
+  function nearestStation(){
+    let idx=-1,best=2.35;
+    stations.forEach((s,i)=>{const d=Math.hypot(s.x-player.x,s.y-player.y);if(d<best){best=d;idx=i;}});
+    return idx;
+  }
+  function start(){playing=true;paused=false;$('intro').hidden=true;$('startButton').blur();nearIndex=nearestStation();toast('Starting at the beginning.');triggerTimeline();}
+  function reset(){visited.clear();player.x=0;player.y=0;nearIndex=-1;timelineIndex=0;closePanels();updateProgress();toast('Timeline restarted.');}
   function move(dt){
-    const steer=(pressed.has('ArrowRight')||pressed.has('d')||pressed.has('D')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')||pressed.has('A')?1:0);
-    const accelerating=pressed.has('ArrowUp')||pressed.has('w')||pressed.has('W');
-    const braking=pressed.has('ArrowDown')||pressed.has('s')||pressed.has('S');
-    const topSpeed=pressed.has('Shift')?330:240;
-    if(accelerating)player.speed=Math.min(topSpeed,player.speed+105*dt);
-    else player.speed=Math.max(0,player.speed-(braking?190:20)*dt);
-    player.distance+=player.speed*dt/3.6;
-    player.lane=Math.max(-.78,Math.min(.78,player.lane+steer*2.2*dt));
-    const next=stations[timelineIndex];
+    const x=(pressed.has('ArrowRight')||pressed.has('d')||pressed.has('D')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')||pressed.has('A')?1:0);
+    const y=(pressed.has('ArrowDown')||pressed.has('s')||pressed.has('S')?1:0)-(pressed.has('ArrowUp')||pressed.has('w')||pressed.has('W')?1:0);
+    if(x||y){const mag=Math.hypot(x,y),speed=(pressed.has('Shift')?10:6.5)*dt;player.x+=x/mag*speed;player.y+=y/mag*speed;const sx=x-y,sy=x+y;player.angle=Math.atan2(sy,sx);player.x=Math.max(-22,Math.min(22,player.x));player.y=Math.max(-22,Math.min(22,player.y));}
+    const old=nearIndex;nearIndex=nearestStation();
+    $('connectButton').classList.toggle('is-ready',nearIndex>=0&&!visited.has(stations[nearIndex].id));
+    if(nearIndex>=0&&!visited.has(stations[nearIndex].id)){
+      $('connectButton').textContent=`Read ${stations[nearIndex].short} · Enter`;
+      if(old!==nearIndex){$('announcer').textContent=`${stations[nearIndex].title} in range.`;}
+    }
+    if(nearIndex<0||visited.has(stations[nearIndex].id))$('connectButton').classList.remove('is-ready');
     triggerTimeline();
-    const remaining=next?next.distance-player.distance:Infinity;
-    nearIndex=next&&remaining>=0&&remaining<150?timelineIndex:-1;
-    $('connectButton').classList.toggle('is-ready',nearIndex>=0);
-    if(nearIndex>=0)$('connectButton').textContent=`Read ${next.short} · Enter`;
   }
   function keyDown(e){
     const key=e.key;
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(key))e.preventDefault();
     if(key==='Escape'){closePanels();return}
     if(key==='m'||key==='M'){openPanel($('mapPanel'));return}
-    if(key==='Enter'&&playing&&!paused){if(nearIndex>=0)openStory(nearIndex,false);return}
+    if(key==='Enter'&&playing&&!paused){if(nearIndex>=0)openStory(nearIndex,true);return}
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D','Shift'].includes(key)&&playing&&!paused){pressed.add(key);}
   }
   function keyUp(e){pressed.delete(e.key);}
@@ -278,7 +269,7 @@
   $('readButton').addEventListener('click',()=>{playing=true;$('intro').hidden=true;openPanel($('profilePanel'))});
   $('mapButton').addEventListener('click',()=>openPanel($('mapPanel')));
   $('profileButton').addEventListener('click',()=>openPanel($('profilePanel')));
-  $('connectButton').addEventListener('click',()=>{if(nearIndex>=0)openStory(nearIndex,false)});
+  $('connectButton').addEventListener('click',()=>{if(nearIndex>=0)openStory(nearIndex,true)});
   $('storyMapButton').addEventListener('click',()=>openPanel($('mapPanel')));
   $('resetButton').addEventListener('click',reset);
   $('profileRouteButton').addEventListener('click',()=>{closePanels();start()});
