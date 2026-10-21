@@ -85,7 +85,7 @@ components:
 
 **Design read:** preserve the full-screen drive-to-discover pattern, compact HUD, map panel, and keyboard/touch controls from the earlier game. Reinterpret the four route stops as Don’s career timeline—Mercedes-Benz, Tesla, TMAP Mobility, and JLR—with a short story popup that opens automatically in chronological order when the car reaches each stop. Keep the Canvas 2D world and existing interface; do not add unrelated features or copy the reference game's code, copy, or assets.
 
-Evidence basis: REA browser scenario `ev_7bbd3abbba7349c47df8b209149986c7a3b0366813f598b6311017a8bdfa98a1` at https://bruno-simon.com/. Observed a Three.js full-screen canvas, drive-to-discover introduction, navigation/map/options/controls panels, keyboard and touch/gamepad instructions, and a behind-the-scenes section. The captured page exposed a WebGL fallback notice; this prototype uses Canvas 2D instead of copying its rendering stack.
+Reference: [Bruno Simon Folio 2025](https://github.com/brunosimon/folio-2025), with its full-screen driving world, exploration-first introduction, map, and interactive points. This version keeps only the drive-to-discover idea and adapts it to a four-stop, dated career timeline; the code, copy, artwork, and interface here are original. The lighter Canvas 2D scene keeps the game phone-friendly without rebuilding the reference’s 3D renderer or physics system.
 
 ## Colors
 

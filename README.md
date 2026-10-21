@@ -1,6 +1,6 @@
 # Charge Quest — Don Lee
 
-A small, self-contained career-timeline driving game. Follow the route from Mercedes-Benz to Tesla, TMAP Mobility, and JLR; each chapter opens automatically when you reach its stop.
+A small, self-contained career-timeline driving game based on a drive-to-discover portfolio pattern. Follow Don’s career from Mercedes-Benz (2016–2020) through Tesla (2020–2021), TMAP Mobility (2021–2023), and JLR (2023–present). Each chapter opens automatically when you reach its stop; the copy keeps the moves personal and conversational rather than turning them into a list of achievements.
 
 ## Test locally
 
