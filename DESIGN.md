@@ -83,7 +83,7 @@ components:
 
 ## Overview
 
-**Design read:** preserve the full-screen drive-to-discover pattern, compact HUD, map panel, and keyboard/touch controls. Expand the four career stops into 13 chronological life milestones, from birth and childhood moves through school, military service, exchanges, working holiday, degree, and career. Each numbered beacon opens its story in order; unknown years stay relative. Keep the Canvas 2D world and existing interface, adding no unrelated features or copied assets/code/copy.
+**Design read:** preserve the full-screen drive-to-discover pattern, compact HUD, map panel, and keyboard/touch controls. Use a bird’s-eye, straight, wide highway—not a loop—so acceleration, lane steering, braking, and boost feel immediate. Keep the 13 chronological life milestones as gates along the road. Settings edits the introduction and all chapter copy and adds/removes one photo per milestone; browser-local text and photo storage includes a restore-defaults action for text.
 
 Reference: [Bruno Simon Folio 2025](https://github.com/brunosimon/folio-2025), with its full-screen driving world, exploration-first introduction, map, and interactive points. This version keeps the drive-to-discover idea and adapts it to a 13-stop life timeline; the code, copy, artwork, and interface here are original. The lighter Canvas 2D scene keeps the game phone-friendly without rebuilding the reference’s 3D renderer or physics system.
 
@@ -102,11 +102,11 @@ Use the system sans-serif stack so the game remains fast and works offline. Disp
 
 ## Layout
 
-The canvas is the primary surface and occupies the viewport. A compact top HUD holds identity and mission progress; a contextual landmark panel stays near the bottom edge; controls sit in a separate touch-friendly strip. Keep interface copy brief so it does not cover the driving route. **Falsifiable test:** at 375px wide, the HUD, mission, and touch controls remain inside the viewport without horizontal scrolling or covering the landmark text.
+The canvas is the primary surface and occupies the viewport. The straight road scrolls vertically beneath a fixed top-down car, with three broad lanes and upcoming checkpoint gates. A compact HUD holds identity and mission progress; story/settings panels stay scrollable and do not obscure the car on phone screens. **Falsifiable test:** at 375px wide, the road, HUD, settings editor, and touch controls remain usable without horizontal scrolling.
 
 ## Elevation & Depth
 
-Create depth with isometric ground planes, road shadows, overlapping terrain, and small parallax. Avoid photographic scenery and heavy post-processing; all landmarks are original Canvas shapes.
+Create speed with scrolling lane dashes, roadside markers, subtle high-speed streaks, and bold checkpoint gates. Avoid turns, loops, photographic scenery, and heavy post-processing; the scene uses original Canvas shapes.
 
 ## Shapes
 
@@ -114,10 +114,11 @@ Use rounded-but-not-pill panels (8–24px radii), crisp geometric roads, simple 
 
 ## Components
 
-- **Driving canvas:** responds to WASD/arrows; keyboard controls are advertised before play.
+- **Driving canvas:** straight top-down highway; W/↑ accelerates, S/↓ brakes, A/D or ←/→ steers, Shift boosts.
 - **Mission HUD:** shows the next chronological chapter and route progress.
 - **Story popup:** opens automatically when the car reaches the next timeline stop; story text reveals progressively. The map remains a direct-reading alternative.
 - **Touch controls:** visible on narrow screens and large enough for thumb use.
+- **Settings:** edit the introduction and all 13 chapters; upload/remove a photo per chapter. Persist text in localStorage and photos in IndexedDB; provide a reset to original copy.
 - **Reduced motion:** respect `prefers-reduced-motion`; game movement remains user-controlled.
 
 ## Do's and Don'ts

@@ -15,9 +15,33 @@
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 #storyCard.is-typing #storyText::after{content:'▍';color:var(--lime);animation:story-caret .7s steps(2,end) infinite}@keyframes story-caret{to{visibility:hidden}}
 </style>
+<style>
+h1{white-space:pre-line}
+.settings-panel{width:min(700px,calc(100vw - 40px));max-height:min(88vh,760px)}
+.settings-panel .panel-card{overflow:auto}
+.settings-form{display:grid;gap:16px}
+.settings-section{display:grid;gap:10px;padding:14px;border:1px solid #ffffff20;border-radius:14px;background:#ffffff05}
+.settings-section h3{margin:0;color:var(--lime);font-size:.95rem}
+.settings-hint,.settings-status{margin:0;color:var(--muted);font-size:.78rem;line-height:1.45}
+.settings-field{display:grid;gap:6px;color:var(--muted);font-size:.76rem;font-weight:800}
+.settings-field input,.settings-field textarea{width:100%;padding:10px 12px;border:1px solid #ffffff2c;border-radius:10px;background:#071b20;color:var(--text);font:500 .9rem/1.5 system-ui,sans-serif}
+.settings-field textarea{min-height:100px;resize:vertical}
+.settings-chapters{display:grid;gap:8px;margin-top:8px}
+.setting-chapter{border:1px solid #ffffff20;border-radius:12px;background:#071b20a8}
+.setting-chapter summary{padding:12px;color:var(--text);font-size:.82rem;font-weight:800;cursor:pointer}
+.setting-fields{display:grid;gap:10px;padding:0 12px 12px}
+.settings-actions{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:900px){.mission{top:64px;bottom:auto;left:12px;width:min(300px,calc(100vw - 24px));padding:12px 14px}.mission h2{font-size:.92rem}.mission p{font-size:.76rem}.desktop-help{display:none}.panel#storyPanel{inset:56px 12px auto;max-height:34vh}.panel#mapPanel,.panel#profilePanel,.panel#settingsPanel{inset:56px 12px auto;width:calc(100vw - 24px);max-height:calc(100dvh - 68px)}.settings-panel .panel-card{max-height:calc(100dvh - 68px)}.touch-controls{display:grid}}
+@media(max-width:390px){.brand-copy small{display:none}.top-actions{gap:4px}.icon-button{min-width:38px;min-height:40px}.counter{gap:4px;padding:7px 8px}.counter b{font-size:.78rem}}
+@media(max-width:700px) and (max-height:500px){.mission{top:58px;left:12px;width:220px}.panel#storyPanel{max-height:30vh}.panel#mapPanel,.panel#profilePanel,.panel#settingsPanel{max-height:calc(100dvh - 64px)}}
+
+.story-image{display:block;width:100%;max-height:240px;object-fit:cover;margin:8px 0 14px;border:1px solid #ffffff24;border-radius:14px}.story-image[hidden],.photo-preview[hidden]{display:none}
+.settings-photo{display:grid;gap:8px;padding-top:6px}.photo-preview{width:min(100%,320px);max-height:180px;object-fit:cover;border-radius:10px;border:1px solid #ffffff2a}.settings-photo input[type=file]{min-height:44px;padding:8px;font-size:16px}.touch-controls [data-key="Shift"]{grid-column:3;grid-row:1;font-size:.6rem;letter-spacing:.01em}
+@media(max-width:768px){.settings-field input,.settings-field textarea{font-size:16px;min-height:44px}.settings-field textarea{min-height:110px}.settings-panel .panel-card{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}}
+</style>
 </head>
 <body>
-<canvas id="world" aria-label="A driving world with numbered stops for Don Lee's life timeline." role="img"></canvas>
+<canvas id="world" aria-label="A straight, top-down driving road with numbered life-timeline checkpoints." role="img"></canvas>
 <div class="hud">
   <header class="topbar">
     <div class="brand" aria-label="Don Lee, life story">
@@ -28,6 +52,7 @@
       <div class="counter" aria-live="polite"><b id="count">0 / 13</b><span class="counter-label">MILESTONES VISITED</span></div>
       <button class="icon-button" id="mapButton" type="button" aria-label="Open route map"><span>Route</span>⌖</button>
       <button class="icon-button" id="profileButton" type="button" aria-label="Read Don Lee's profile"><span>About</span>↗</button>
+      <button class="icon-button" id="settingsButton" type="button" aria-label="Edit story text"><span>Settings</span>⚙</button>
     </div>
   </header>
   <section class="mission" aria-label="Current mission">
@@ -37,12 +62,13 @@
     <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
     <button class="connect-button" id="connectButton" type="button">Read this stop · Enter</button>
   </section>
-  <div class="desktop-help" aria-label="Keyboard controls"><span class="key">WASD</span><span class="key">↑↓←→</span><span>drive</span><span class="key">SHIFT</span><span>boost</span><span class="key">ENTER</span><span>read stop</span><span class="key">M</span><span>map</span></div>
+  <div class="desktop-help" aria-label="Keyboard controls"><span class="key">W/↑</span><span>accelerate</span><span class="key">S/↓</span><span>brake</span><span class="key">A/D</span><span>steer</span><span class="key">SHIFT</span><span>boost</span><span class="key">ENTER</span><span>read stop</span></div>
   <div class="touch-controls" aria-label="Touch driving controls">
-    <button type="button" data-key="ArrowUp" aria-label="Drive forward">↑</button>
-    <button type="button" data-key="ArrowLeft" aria-label="Drive left">←</button>
-    <button type="button" data-key="ArrowDown" aria-label="Drive backward">↓</button>
-    <button type="button" data-key="ArrowRight" aria-label="Drive right">→</button>
+    <button type="button" data-key="ArrowUp" aria-label="Accelerate">↑</button>
+    <button type="button" data-key="ArrowLeft" aria-label="Steer left">←</button>
+    <button type="button" data-key="ArrowDown" aria-label="Brake">↓</button>
+    <button type="button" data-key="ArrowRight" aria-label="Steer right">→</button>
+    <button type="button" data-key="Shift" aria-label="Boost">BOOST</button>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -51,8 +77,9 @@
 <section class="screen" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
   <div class="intro-card">
     <div class="eyebrow">A LIFE, ONE STOP AT A TIME</div>
-    <h1 id="introTitle">My road<br>so far.</h1>
-    <p>I was born in Korea, grew up across Asia, and studied and worked in Europe before finding my way into EV charging. Drive through the places, people and choices that shaped the road so far.</p>
+    <h1 id="introTitle">My road
+so far.</h1>
+    <p id="introText">I was born in Korea, grew up across Asia, and studied and worked in Europe before finding my way into EV charging. Drive through the places, people and choices that shaped the road so far.</p>
     <div class="intro-actions"><button class="primary-button" id="startButton" type="button">Start at the beginning</button><button class="secondary-button" id="readButton" type="button">Read my profile</button></div>
     <div class="intro-foot"><span><b class="key">WASD</b> or arrows to drive</span><span><b class="key">ENTER</b> at a stop to read</span><span>Touch controls on mobile</span></div>
   </div>
@@ -70,6 +97,7 @@
 <aside class="panel" id="storyPanel" role="dialog" aria-modal="true" aria-labelledby="storyTitle" hidden>
   <div class="panel-card" id="storyCard">
     <div class="panel-head"><div><div class="eyebrow" id="storyKicker">CHAPTER 01</div><h2 id="storyTitle">The network</h2></div><button class="panel-close" type="button" data-close aria-label="Close story">×</button></div>
+    <img id="storyImage" class="story-image" alt="" hidden>
     <p id="storyText"></p>
     <div class="panel-actions"><button class="primary-button" type="button" data-close>Back to the route</button><button class="secondary-button" type="button" id="storyMapButton">All stops</button></div>
   </div>
@@ -84,111 +112,115 @@
   </div>
 </aside>
 
+<aside class="panel settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+  <div class="panel-card">
+    <div class="panel-head"><div><div class="eyebrow">PERSONALIZE</div><h2 id="settingsTitle">Edit your story</h2></div><button class="panel-close" type="button" data-close aria-label="Close settings">×</button></div>
+    <p>Edit the introduction and any chapter, or add a photo to a milestone. Text and photos stay in this browser; images up to 8 MB.</p>
+    <form id="settingsForm" class="settings-form">
+      <section class="settings-section"><h3>Introduction</h3><div id="settingsIntroFields"></div></section>
+      <section class="settings-section"><h3>Timeline chapters</h3><div class="settings-hint">Open a chapter to edit its label, title, date/location and story.</div><div id="settingsStories"></div></section>
+      <div class="settings-actions"><button class="primary-button" type="submit">Save text changes</button><button class="secondary-button" type="button" id="resetTextButton">Restore original text</button></div>
+      <p id="settingsStatus" class="settings-status" role="status" aria-live="polite">Edits are not saved yet.</p>
+    </form>
+  </div>
+</aside>
+
 <script>
 (() => {
   const canvas = document.getElementById('world');
   const ctx = canvas.getContext('2d');
   const $ = (id) => document.getElementById(id);
   const stations = [
-    {id:'early-years',x:0,y:0,code:'01',short:'EARLY YEARS',title:'Born in Korea; moved early',kicker:'1991–AGE 4 · KOREA → HONG KONG → SINGAPORE',text:'I was born in South Korea on 27 October 1991, about two weeks overdue. While waiting, my mom gave up and started making kimchi. At 15 days old, I moved to Hong Kong with my family; my father was there as an expatriate. Before I was four, I had also lived in Singapore, then we returned to Korea.'},
-    {id:'korea-school',x:5,y:0,code:'02',short:'SOUTH KOREA',title:'Back to Korea',kicker:'AGE 4–2002 · SOUTH KOREA',text:'I returned to South Korea and went to elementary school there through fifth grade. In 2002, my parents moved us to Beijing.'},
-    {id:'beijing',x:10,y:0,code:'03',short:'BEIJING',title:'Beijing and high school',kicker:'2002–2009 · BEIJING, CHINA',text:'I moved with my parents in fifth grade and stayed in Beijing through high school, graduating in 2009. In 2006–07, I was an exchange student in the United States, spending time in Butte, Montana, and Atlanta, Georgia.'},
-    {id:'university',x:14,y:4,code:'04',short:'UNIVERSITY',title:'Back to university',kicker:'2010–2016 · SEOUL, SOUTH KOREA',text:'I returned to South Korea in 2010 and studied Business Administration at Sungkyunkwan University, a Samsung-sponsored university. My years there included military service, exchanges in Europe and a working holiday in Sweden before I returned to finish my degree.'},
-    {id:'military',x:12,y:9,code:'05',short:'MILITARY',title:'Military police, kitchen work',kicker:'2012–2013 · SOUTH KOREA',text:'I served in the Military Police, but worked in the kitchen. I ordered ingredients, planned menus and handled the accounts while helping feed about 550 people per meal. It taught me how a small food operation runs day to day.'},
-    {id:'alicante',x:7,y:13,code:'06',short:'ALICANTE',title:'A semester in Spain',kicker:'2013 · ALICANTE, SPAIN',text:'I returned to university and spent an exchange semester in Alicante. I met Rochelle there; she’s my wife now.'},
-    {id:'paris',x:1,y:15,code:'07',short:'PARIS',title:'Another exchange, in Paris',kicker:'AFTER ALICANTE · PARIS, FRANCE',text:'After a semester in Alicante, I went to Paris for another exchange semester. After that, I took a break from university and headed to Sweden.'},
-    {id:'stockholm',x:-5,y:13,code:'08',short:'STOCKHOLM',title:'A working holiday in Sweden',kicker:'AFTER PARIS · STOCKHOLM, SWEDEN',text:'After Paris, I paused university and took a working holiday in Stockholm. I spent nearly six months working in a Chinese kitchen while Rochelle finished university in Manchester.'},
-    {id:'degree',x:-10,y:9,code:'09',short:'DEGREE',title:'Back to finish my degree',kicker:'AFTER STOCKHOLM · 2016 · SOUTH KOREA',text:'When the working holiday ended, I returned to Sungkyunkwan University and finished my Business Administration degree in 2016. I was ready to start working.'},
-    {id:'mercedes',x:-12,y:3,code:'10',short:'MERCEDES-BENZ',title:'My first job in automotive',kicker:'NOV 2016–JUL 2020 · MERCEDES-BENZ',text:'I joined Mercedes-Benz Korea as an intern, working on the E-Class launch and a Salesforce CRM rollout. I then moved into after-sales systems and model launches, representing Aftersales in an EV task force. Seeing EVs up close made me especially curious about charging and how it changes everyday car use.'},
-    {id:'tesla',x:-10,y:-3,code:'11',short:'TESLA',title:'Following my interest in charging',kicker:'AUG 2020–OCT 2021 · TESLA',text:'Charging was the part of EVs I had become most interested in, so I was lucky to join Tesla’s charging team. I worked on AC charging for homes, workplaces and destination sites, including setting up the home-charging program with installer partners and warranty policies.'},
-    {id:'tmap',x:-5,y:-7,code:'12',short:'TMAP MOBILITY',title:'From one automaker to the wider network',kicker:'NOV 2021–APR 2023 · TMAP MOBILITY',text:'At Tesla, I had seen charging from an automaker’s side. At TMAP Mobility, I joined the founding eMSP team to build the service across the wider mobility network—partnering with CPOs and connecting their data to TMAP’s platform.'},
-    {id:'jlr',x:2,y:-9,code:'13',short:'JLR',title:'A move to the UK, then global',kicker:'APR 2023–PRESENT · JLR',text:'When Rochelle wanted to move to the UK, I was fortunate to find a role at JLR. I now work with local partners on home charging, public charging and smart-energy services across 70 markets in Asia Pacific, the Middle East, Africa and Latin America.'}
+    {id:'early-years',code:'01',short:'EARLY YEARS',title:'Born in Korea; moved early',kicker:'1991–AGE 4 · KOREA → HONG KONG → SINGAPORE',text:'I was born in South Korea on 27 October 1991, about two weeks overdue. While waiting, my mom gave up and started making kimchi. At 15 days old, I moved to Hong Kong with my family; my father was there as an expatriate. Before I was four, I had also lived in Singapore, then we returned to Korea.'},
+    {id:'korea-school',code:'02',short:'SOUTH KOREA',title:'Back to Korea',kicker:'AGE 4–2002 · SOUTH KOREA',text:'I returned to South Korea and went to elementary school there through fifth grade. In 2002, my parents moved us to Beijing.'},
+    {id:'beijing',code:'03',short:'BEIJING',title:'Beijing and high school',kicker:'2002–2009 · BEIJING, CHINA',text:'I moved with my parents in fifth grade and stayed in Beijing through high school, graduating in 2009. In 2006–07, I was an exchange student in the United States, spending time in Butte, Montana, and Atlanta, Georgia.'},
+    {id:'university',code:'04',short:'UNIVERSITY',title:'Back to university',kicker:'2010–2016 · SEOUL, SOUTH KOREA',text:'I returned to South Korea in 2010 and studied Business Administration at Sungkyunkwan University, a Samsung-sponsored university. My years there included military service, exchanges in Europe and a working holiday in Sweden before I returned to finish my degree.'},
+    {id:'military',code:'05',short:'MILITARY',title:'Military police, kitchen work',kicker:'2012–2013 · SOUTH KOREA',text:'I served in the Military Police, but worked in the kitchen. I ordered ingredients, planned menus and handled the accounts while helping feed about 550 people per meal. It taught me how a small food operation runs day to day.'},
+    {id:'alicante',code:'06',short:'ALICANTE',title:'A semester in Spain',kicker:'2013 · ALICANTE, SPAIN',text:'I returned to university and spent an exchange semester in Alicante. I met Rochelle there; she’s my wife now.'},
+    {id:'paris',code:'07',short:'PARIS',title:'Another exchange, in Paris',kicker:'AFTER ALICANTE · PARIS, FRANCE',text:'After a semester in Alicante, I went to Paris for another exchange semester. After that, I took a break from university and headed to Sweden.'},
+    {id:'stockholm',code:'08',short:'STOCKHOLM',title:'A working holiday in Sweden',kicker:'AFTER PARIS · STOCKHOLM, SWEDEN',text:'After Paris, I paused university and took a working holiday in Stockholm. I spent nearly six months working in a Chinese kitchen while Rochelle finished university in Manchester.'},
+    {id:'degree',code:'09',short:'DEGREE',title:'Back to finish my degree',kicker:'AFTER STOCKHOLM · 2016 · SOUTH KOREA',text:'When the working holiday ended, I returned to Sungkyunkwan University and finished my Business Administration degree in 2016. I was ready to start working.'},
+    {id:'mercedes',code:'10',short:'MERCEDES-BENZ',title:'My first job in automotive',kicker:'NOV 2016–JUL 2020 · MERCEDES-BENZ',text:'I joined Mercedes-Benz Korea as an intern, working on the E-Class launch and a Salesforce CRM rollout. I then moved into after-sales systems and model launches, representing Aftersales in an EV task force. Seeing EVs up close made me especially curious about charging and how it changes everyday car use.'},
+    {id:'tesla',code:'11',short:'TESLA',title:'Following my interest in charging',kicker:'AUG 2020–OCT 2021 · TESLA',text:'Charging was the part of EVs I had become most interested in, so I was lucky to join Tesla’s charging team. I worked on AC charging for homes, workplaces and destination sites, including setting up the home-charging program with installer partners and warranty policies.'},
+    {id:'tmap',code:'12',short:'TMAP MOBILITY',title:'From one automaker to the wider network',kicker:'NOV 2021–APR 2023 · TMAP MOBILITY',text:'At Tesla, I had seen charging from an automaker’s side. At TMAP Mobility, I joined the founding eMSP team to build the service across the wider mobility network—partnering with CPOs and connecting their data to TMAP’s platform.'},
+    {id:'jlr',code:'13',short:'JLR',title:'A move to the UK, then global',kicker:'APR 2023–PRESENT · JLR',text:'When Rochelle wanted to move to the UK, I was fortunate to find a role at JLR. I now work with local partners on home charging, public charging and smart-energy services across 70 markets in Asia Pacific, the Middle East, Africa and Latin America.'}
   ];
-  const route = [{x:0,y:0},...stations.map(({x,y})=>({x,y})),{x:0,y:0}];
-  const trees = [[-7,-5],[-4,-9],[2,-9],[11,-8],[17,-4],[18,4],[12,10],[2,12],[-7,10],[-9,3],[-10,-2],[4,3],[10,5],[1,-3]];
-  const player = {x:0,y:0,angle:-Math.PI/4};
+  stations.forEach((station,index)=>station.distance=index*850);
+  const ROAD_SCALE=1.35;
+  const player={lane:0,distance:0,speed:0};
   const pressed = new Set();
   const visited = new Set();
-  let width=0,height=0,unit=14,playing=false,nearIndex=-1,paused=false,last=0,toastTimer=0,typeTimer=0,timelineIndex=0;
-  const panels=[$('mapPanel'),$('storyPanel'),$('profilePanel')];
+  let width=0,height=0,playing=false,nearIndex=-1,paused=false,last=0,toastTimer=0,typeTimer=0,timelineIndex=0;
+  const panels=[$('mapPanel'),$('storyPanel'),$('profilePanel'),$('settingsPanel')];
+  const TEXT_KEY='don-charge-quest-text-v1';
+  const PHOTO_DB='don-charge-quest-photos',PHOTO_STORE='milestones';
+  let photoDbPromise=null,photoEpoch=0,storyPhotoEpoch=0,storyPhotoUrl='';
+  const previewUrls=new Map();
+  const defaultText={introTitle:$('introTitle').textContent, introText:$('introText').textContent, stories:Object.fromEntries(stations.map(s=>[s.id,{short:s.short,title:s.title,kicker:s.kicker,text:s.text}]))};
+  const boundedText=(value,fallback,max)=>typeof value==='string'&&value.trim()?value.slice(0,max):fallback;
+  function readTextSettings(){
+    let saved={};try{saved=JSON.parse(localStorage.getItem(TEXT_KEY)||'{}')}catch{}
+    const stories={};
+    for(const s of stations){const v=saved?.stories?.[s.id]||{};stories[s.id]={short:boundedText(v.short,s.short,48),title:boundedText(v.title,s.title,140),kicker:boundedText(v.kicker,s.kicker,180),text:boundedText(v.text,s.text,5000)}}
+    return{introTitle:boundedText(saved.introTitle,defaultText.introTitle,100),introText:boundedText(saved.introText,defaultText.introText,1500),stories};
+  }
+  let textState=readTextSettings();
+  function applyTextSettings(){
+    $('introTitle').textContent=textState.introTitle;$('introText').textContent=textState.introText;
+    stations.forEach(s=>Object.assign(s,textState.stories[s.id]));
+  }
+  applyTextSettings();
 
   function resize(){
     const dpr=Math.min(window.devicePixelRatio||1,2);
-    width=window.innerWidth;height=window.innerHeight;unit=Math.max(6,Math.min(width/52,height/34,24));
+    width=window.innerWidth;height=window.innerHeight;
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);canvas.style.width=width+'px';canvas.style.height=height+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
     draw();
   }
-  function project(x,y){return [width*.5+(x-player.x-y+player.y)*unit*.72,height*.57+(x-player.x+y-player.y)*unit*.36]}
+  function roadBounds(){const roadWidth=Math.min(width*.82,760);return{left:(width-roadWidth)/2,right:(width+roadWidth)/2,width:roadWidth,center:width/2}}
   function polygon(points,fill,stroke=null,lineWidth=1){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}}
-  function line(points,color,lineWidth,dash=[]){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.strokeStyle=color;ctx.lineWidth=lineWidth;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(dash);ctx.stroke();ctx.setLineDash([])}
   function roundedRect(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill()}
-
   function drawGround(){
-    ctx.fillStyle='#0a2023';ctx.fillRect(0,0,width,height);
-    const cx=Math.floor(player.x/4),cy=Math.floor(player.y/4);
-    for(let x=cx-22;x<=cx+22;x++)for(let y=cy-22;y<=cy+22;y++){
-      const a=project(x*4,y*4),b=project((x+1)*4,y*4),c=project((x+1)*4,(y+1)*4),d=project(x*4,(y+1)*4);
-      polygon([a,b,c,d],((x+y)&1)?'#10302e':'#12332f','#1c403b',.7);
-    }
-    // A thin horizon band keeps the world readable without hiding the route.
-    ctx.fillStyle='#0b2528';ctx.fillRect(0,0,width,Math.max(38,height*.12));
-    for(let i=-5;i<=5;i++){
-      const y=height*.15+i*unit*3.2; if(y<0||y>height)continue;
-      ctx.fillStyle=i%2?'#12302f':'#102c2b';ctx.fillRect(0,y,width,unit*1.15);
-    }
+    const g=ctx.createLinearGradient(0,0,0,height);g.addColorStop(0,'#294b36');g.addColorStop(1,'#102a25');ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
+    const scroll=player.distance*ROAD_SCALE;
+    for(let y=(scroll%150)-150;y<height;y+=150){ctx.fillStyle='#d7e6b11c';ctx.fillRect(0,y,width,3)}
   }
-  function drawRoad(){
-    const points=route.map(p=>project(p.x,p.y));
-    line(points,'#315b59',Math.max(12,unit*2.15));
-    line(points,'#183d3d',Math.max(8,unit*1.35));
-    line(points,'#83d8d055',Math.max(1,unit*.07),[unit*.34,unit*.24]);
+  function drawTrack(){
+    const r=roadBounds(),shoulder=r.width*.055,scroll=player.distance*ROAD_SCALE;
+    ctx.fillStyle='#b6b19a';ctx.fillRect(r.left-shoulder,0,r.width+shoulder*2,height);
+    const asphalt=ctx.createLinearGradient(r.left,0,r.right,0);asphalt.addColorStop(0,'#293239');asphalt.addColorStop(.5,'#414a50');asphalt.addColorStop(1,'#293239');ctx.fillStyle=asphalt;ctx.fillRect(r.left,0,r.width,height);
+    ctx.fillStyle='#e9e5ca';ctx.fillRect(r.left+shoulder*.35,0,Math.max(2,shoulder*.18),height);ctx.fillRect(r.right-shoulder*.53,0,Math.max(2,shoulder*.18),height);
+    const dash=48,spacing=104,offset=scroll%spacing;
+    for(const lane of [1,2]){const x=r.left+r.width*lane/3;ctx.fillStyle='#eeeeddcc';for(let y=offset-spacing;y<height;y+=spacing)ctx.fillRect(x-2,y,4,dash)}
+    const postOffset=scroll%166;
+    for(let y=postOffset-166;y<height;y+=166){for(const side of [-1,1]){const x=side<0?r.left-shoulder*.5:r.right+shoulder*.5;ctx.fillStyle='#e8dca9';ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#e85d53';ctx.fillRect(x-2,y+4,4,5)}}
   }
-  function drawTree(x,y,index){
-    const [sx,sy]=project(x,y),s=Math.max(7,unit*.42),h=s*1.35;
-    ctx.fillStyle='#091d20';ctx.beginPath();ctx.ellipse(sx,sy+2,s*.82,s*.34,0,0,Math.PI*2);ctx.fill();
-    polygon([[sx-s*.65,sy-s*.1],[sx,sy-h],[sx+s*.67,sy-s*.1]],index%2?'#34735d':'#40816a','#68a77d',.8);
-    polygon([[sx-s*.48,sy-s*.02],[sx,sy-h*.72],[sx+s*.48,sy-s*.02]],'#5a9875');
-    ctx.fillStyle='#b8db91';ctx.fillRect(sx-s*.07,sy-s*.16,s*.14,s*.16);
-  }
-  function drawStation(station,index,time){
-    const [x,y]=project(station.x,station.y),done=visited.has(station.id),near=index===nearIndex;
-    const pulse=1+Math.sin(time/360+index)*.08;
-    ctx.fillStyle='#06161877';ctx.beginPath();ctx.ellipse(x,y+unit*.3,unit*1.18,unit*.5,0,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.ellipse(x,y,unit*1.02*pulse,unit*.46*pulse,0,0,Math.PI*2);ctx.fillStyle=done?'#c7f27a20':'#83d8d01a';ctx.fill();ctx.strokeStyle=done?'#c7f2a8':'#83d8d0';ctx.lineWidth=near?3:1.5;ctx.stroke();
-    // A numbered beacon marks each autobiographical milestone.
-    const beaconY=y-unit*.9;
-    ctx.strokeStyle=done?'#c7f27a':'#83d8d0';ctx.lineWidth=Math.max(2,unit*.12);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,beaconY);ctx.stroke();
-    ctx.beginPath();ctx.arc(x,beaconY,Math.max(5,unit*.22),0,Math.PI*2);ctx.fillStyle=done?'#c7f27a':'#83d8d0';ctx.fill();
-    ctx.fillStyle=done?'#c7f27a':'#ffb86b';ctx.font=`900 ${Math.max(9,unit*.38)}px system-ui`;ctx.textAlign='center';ctx.fillText(station.code,x,beaconY-unit*.48);
-    if(near||done){
-      const label=station.short;ctx.font=`800 ${Math.max(9,Math.min(12,unit*.37))}px system-ui`;const tw=ctx.measureText(label).width+18;
-      roundedRect(x-tw/2,y-unit*2.15,tw,22,8,'#071b20e8');ctx.strokeStyle='#ffffff30';ctx.lineWidth=1;ctx.strokeRect(x-tw/2,y-unit*2.15,tw,22);
-      ctx.fillStyle=done?'#c7f27a':'#f1f4e8';ctx.fillText(label,x,y-unit*2.15+15);
-    }
-  }
-  function drawCar(){
-    const [x,y]=project(player.x,player.y);ctx.save();ctx.translate(x,y);ctx.rotate(player.angle);
-    ctx.fillStyle='#06141699';ctx.beginPath();ctx.ellipse(-unit*.05,unit*.34,unit*.95,unit*.42,0,0,Math.PI*2);ctx.fill();
-    const L=Math.max(29,unit*1.55),W=Math.max(18,unit*.88);
-    roundedRect(-L*.44,-W*.42,L*.88,W*.84,W*.24,'#102126');
-    polygon([[L*.48,0],[L*.25,-W*.43],[-L*.24,-W*.43],[-L*.46,-W*.24],[-L*.46,W*.24],[-L*.24,W*.43],[L*.25,W*.43]],'#f1f4e8','#071b20',1.4);
-    polygon([[L*.22,-W*.3],[-L*.14,-W*.3],[-L*.27,-W*.14],[-L*.27,W*.14],[-L*.14,W*.3],[L*.22,W*.3]],'#83d8d0');
-    ctx.fillStyle='#071b20';ctx.fillRect(-L*.31,-W*.57,L*.23,W*.13);ctx.fillRect(L*.08,-W*.57,L*.23,W*.13);ctx.fillRect(-L*.31,W*.44,L*.23,W*.13);ctx.fillRect(L*.08,W*.44,L*.23,W*.13);
-    ctx.fillStyle='#c7f27a';ctx.fillRect(L*.34,-W*.22,L*.1,W*.14);ctx.fillRect(L*.34,W*.08,L*.1,W*.14);
+  function drawSpeedLines(){
+    if(player.speed<120)return;const r=roadBounds(),alpha=Math.min(.45,(player.speed-120)/500);ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle='#eff8e6';ctx.lineWidth=2;
+    for(let i=0;i<12;i++){const side=i%2?1:-1,y=(i*97+player.distance*ROAD_SCALE*2.5)%height,x=side<0?r.left-12:r.right+12;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+18+player.speed*.12);ctx.stroke()}
     ctx.restore();
   }
+  function drawCheckpoint(station){
+    const ahead=station.distance-player.distance,carY=height*(width<=900?.60:.73),y=carY-ahead*ROAD_SCALE,r=roadBounds();
+    if(ahead<0||y<-30||y>height+30)return;
+    const gateW=r.width*.86,gateX=r.center-gateW/2;
+    ctx.fillStyle='#102b30';ctx.fillRect(gateX,y-12,gateW,24);ctx.strokeStyle='#c7f27a';ctx.lineWidth=2;ctx.strokeRect(gateX,y-12,gateW,24);
+    ctx.fillStyle='#c7f27a';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${Math.max(11,Math.min(18,width*.035))}px system-ui`;ctx.fillText(`${station.code}  ·  ${station.short}`,r.center,y);ctx.textBaseline='alphabetic';
+    ctx.fillStyle='#f1f4e8';ctx.fillRect(gateX,y-20,6,40);ctx.fillRect(gateX+gateW-6,y-20,6,40);
+  }
+  function drawCar(){
+    const r=roadBounds(),cx=r.center+player.lane*r.width*.31,cy=height*(width<=900?.60:.73),w=Math.max(38,Math.min(r.width*.19,62)),h=w*1.7;
+    ctx.fillStyle='#071513a8';ctx.beginPath();ctx.ellipse(cx+2,cy+5,w*.5,h*.46,0,0,Math.PI*2);ctx.fill();
+    roundedRect(cx-w*.48,cy-h*.32,w*.13,h*.22,4,'#10191d');roundedRect(cx+w*.35,cy-h*.32,w*.13,h*.22,4,'#10191d');roundedRect(cx-w*.48,cy+h*.12,w*.13,h*.22,4,'#10191d');roundedRect(cx+w*.35,cy+h*.12,w*.13,h*.22,4,'#10191d');
+    const paint=ctx.createLinearGradient(cx-w/2,cy, cx+w/2,cy);paint.addColorStop(0,'#8fa5a0');paint.addColorStop(.45,'#f5f0dc');paint.addColorStop(1,'#bcc9c1');
+    polygon([[cx-w*.34,cy+h*.46],[cx-w*.46,cy+h*.28],[cx-w*.48,cy-h*.2],[cx-w*.29,cy-h*.43],[cx,cy-h*.5],[cx+w*.29,cy-h*.43],[cx+w*.48,cy-h*.2],[cx+w*.46,cy+h*.28],[cx+w*.34,cy+h*.46]],paint,'#f4f2e6',2);
+    polygon([[cx-w*.32,cy-h*.2],[cx-w*.22,cy-h*.36],[cx,cy-h*.41],[cx+w*.22,cy-h*.36],[cx+w*.32,cy-h*.2],[cx+w*.28,cy+h*.02],[cx-w*.28,cy+h*.02]],'#18333b','#83d8d0',1.5);
+    polygon([[cx-w*.3,cy+h*.08],[cx+w*.3,cy+h*.08],[cx+w*.27,cy+h*.3],[cx-w*.27,cy+h*.3]],'#a9b8b0','#e7eadc',1);
+    roundedRect(cx-w*.34,cy-h*.46,w*.18,h*.035,3,'#fff2ba');roundedRect(cx+w*.16,cy-h*.46,w*.18,h*.035,3,'#fff2ba');roundedRect(cx-w*.34,cy+h*.39,w*.18,h*.035,3,'#ff6960');roundedRect(cx+w*.16,cy+h*.39,w*.18,h*.035,3,'#ff6960');
+  }
   function draw(time=0){
-    if(!ctx||!width||!height)return;
-    drawGround();drawRoad();
-    trees.forEach(([x,y],i)=>drawTree(x,y,i));
-    stations.forEach((s,i)=>drawStation(s,i,time));
-    drawCar();
-    if(playing){
-      const target=stations.findIndex(s=>!visited.has(s.id));
-      const next=target<0?null:stations[target];
-      if(next){const d=Math.hypot(next.x-player.x,next.y-player.y);$('distance').textContent=nearIndex===target?'IN RANGE':`${Math.round(d*12)} m AWAY`}
-      else $('distance').textContent='ROUTE COMPLETE';
-    }
+    if(!ctx||!width||!height)return;drawGround();drawTrack();drawSpeedLines();
+    const next=stations[timelineIndex];if(next)drawCheckpoint(next);drawCar();$('distance').textContent=`${Math.round(player.speed)} KM/H`;
   }
   function toast(text){const t=$('toast');t.textContent=text;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),1900)}
   function updateProgress(){
@@ -196,7 +228,7 @@
     $('progressBar').style.width=`${visited.size/stations.length*100}%`;
     const next=stations.find(s=>!visited.has(s.id));
     $('missionTitle').textContent=next?next.title:'The whole journey';
-    $('missionText').textContent=next?`Next: ${next.short}. Its story opens when you arrive.`:'That’s the whole timeline. Want to take the drive again?';
+    $('missionText').textContent=next?`Next stop: ${next.short}. ↑ accelerate · ←/→ steer · SHIFT boost.`:'That’s the whole timeline. Want to take the drive again?';
     $('announcer').textContent=`${visited.size} of ${stations.length} milestones visited.`;
     if(!next)toast('Timeline complete — you made it.');
     updateStopList();
@@ -204,10 +236,82 @@
   function updateStopList(){
     const list=$('stopList');list.replaceChildren();
     stations.forEach((s,i)=>{
-      const b=document.createElement('button');b.type='button';b.className='stop-item';b.innerHTML=`<span class="stop-number">${s.code}</span><span><strong>${s.title}</strong><small>${s.kicker}</small></span><span class="stop-status">${visited.has(s.id)?'VISITED':'READ'}</span>`;
+      const b=document.createElement('button');b.type='button';b.className='stop-item';
+      const number=document.createElement('span');number.className='stop-number';number.textContent=s.code;
+      const copy=document.createElement('span'),title=document.createElement('strong'),kicker=document.createElement('small');title.textContent=s.title;kicker.textContent=s.kicker;copy.append(title,kicker);
+      const status=document.createElement('span');status.className='stop-status';status.textContent=visited.has(s.id)?'VISITED':'READ';b.append(number,copy,status);
       b.addEventListener('click',()=>{closePanels();openStory(i,false)});list.append(b);
     });
   }
+
+
+  function openPhotoDB(){
+    if(!window.indexedDB)return Promise.reject(new Error('IndexedDB is unavailable'));
+    if(photoDbPromise)return photoDbPromise;
+    photoDbPromise=new Promise((resolve,reject)=>{const request=indexedDB.open(PHOTO_DB,1);request.onupgradeneeded=()=>request.result.createObjectStore(PHOTO_STORE);request.onsuccess=()=>resolve(request.result);request.onerror=()=>{photoDbPromise=null;reject(request.error)};request.onblocked=()=>{photoDbPromise=null;reject(new Error('Image storage is blocked'))}});
+    return photoDbPromise;
+  }
+  function photoAction(mode,action,id,value){
+    return openPhotoDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(PHOTO_STORE,mode),store=tx.objectStore(PHOTO_STORE);let result=null;const request=action==='get'?store.get(id):action==='put'?store.put(value,id):store.delete(id);request.onsuccess=()=>{result=request.result||null};request.onerror=()=>reject(request.error);tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error||new Error('Image storage failed'));tx.onabort=()=>reject(tx.error||new Error('Image storage was interrupted'))}));
+  }
+  function setPhotoPreview(id,blob,epoch){
+    if(epoch!==photoEpoch)return;const image=document.querySelector(`[data-photo-preview="${id}"]`);if(!image)return;
+    const old=previewUrls.get(id);if(old){URL.revokeObjectURL(old);previewUrls.delete(id)}
+    if(!blob){image.removeAttribute('src');image.hidden=true;return}
+    const url=URL.createObjectURL(blob);previewUrls.set(id,url);image.src=url;image.alt=`Photo for ${stations.find(s=>s.id===id)?.title||'milestone'}`;image.hidden=false;
+  }
+  async function refreshPhotoPreview(id,epoch=photoEpoch){try{setPhotoPreview(id,await photoAction('readonly','get',id),epoch)}catch{$('settingsStatus').textContent='Image storage is unavailable in this browser.'}}
+  async function handlePhotoChange(event){
+    const input=event.target.closest?.('input[data-photo-id]'),file=input?.files?.[0];if(!file)return;
+    if(!file.type.startsWith('image/')){$('settingsStatus').textContent='Choose an image file.';input.value='';return}
+    if(file.size>8*1024*1024){$('settingsStatus').textContent='Choose an image smaller than 8 MB.';input.value='';return}
+    try{await photoAction('readwrite','put',input.dataset.photoId,file);await refreshPhotoPreview(input.dataset.photoId);$('settingsStatus').textContent='Milestone photo saved in this browser.'}catch{$('settingsStatus').textContent='Could not save that photo. Check available browser storage.'}
+    input.value='';
+  }
+  async function handlePhotoRemove(event){
+    const button=event.target.closest?.('[data-remove-photo]');if(!button)return;
+    try{await photoAction('readwrite','delete',button.dataset.removePhoto);setPhotoPreview(button.dataset.removePhoto,null,photoEpoch);$('settingsStatus').textContent='Milestone photo removed.'}catch{$('settingsStatus').textContent='Could not remove that photo.'}
+  }
+  function clearStoryPhoto(){storyPhotoEpoch++;if(storyPhotoUrl){URL.revokeObjectURL(storyPhotoUrl);storyPhotoUrl=''}const image=$('storyImage');image.hidden=true;image.removeAttribute('src');image.alt=''}
+  async function showStoryPhoto(station){
+    const epoch=++storyPhotoEpoch;try{const blob=await photoAction('readonly','get',station.id);if(!blob||epoch!==storyPhotoEpoch)return;storyPhotoUrl=URL.createObjectURL(blob);const image=$('storyImage');image.src=storyPhotoUrl;image.alt=`Photo for ${station.title}`;image.hidden=false}catch{}
+  }
+
+  function addSettingField(parent,label,value,key,max,multiline=false,storyId=''){
+    const wrapper=document.createElement('label');wrapper.className='settings-field';wrapper.append(document.createTextNode(label));
+    const input=document.createElement(multiline?'textarea':'input');if(!multiline)input.type='text';input.value=value;input.maxLength=max;
+    if(storyId){input.dataset.storyId=storyId;input.dataset.storyField=key}else input.dataset.settingKey=key;
+    wrapper.append(input);parent.append(wrapper);
+  }
+  function buildSettingsForm(){
+    const intro=$('settingsIntroFields');intro.replaceChildren();addSettingField(intro,'Heading',textState.introTitle,'introTitle',100);addSettingField(intro,'Introduction',textState.introText,'introText',1500,true);
+    const list=$('settingsStories');list.replaceChildren();list.className='settings-chapters';
+    for(const s of stations){const details=document.createElement('details');details.className='setting-chapter';const summary=document.createElement('summary');summary.textContent=`${s.code} · ${s.short} — ${s.title}`;details.append(summary);const fields=document.createElement('div');fields.className='setting-fields';
+      addSettingField(fields,'Short label',textState.stories[s.id].short,'short',48,false,s.id);addSettingField(fields,'Chapter title',textState.stories[s.id].title,'title',140,false,s.id);addSettingField(fields,'Date and place',textState.stories[s.id].kicker,'kicker',180,false,s.id);addSettingField(fields,'Story',textState.stories[s.id].text,'text',5000,true,s.id);
+      const photo=document.createElement('div');photo.className='settings-photo';const preview=document.createElement('img');preview.className='photo-preview';preview.dataset.photoPreview=s.id;preview.hidden=true;photo.append(preview);
+      const photoLabel=document.createElement('label');photoLabel.className='settings-field';photoLabel.append(document.createTextNode('Milestone photo'));const file=document.createElement('input');file.type='file';file.accept='image/*';file.dataset.photoId=s.id;photoLabel.append(file);photo.append(photoLabel);
+      const remove=document.createElement('button');remove.type='button';remove.className='secondary-button';remove.dataset.removePhoto=s.id;remove.textContent='Remove photo';photo.append(remove);fields.append(photo);details.append(fields);list.append(details)}
+    for(const url of previewUrls.values())URL.revokeObjectURL(url);previewUrls.clear();const epoch=++photoEpoch;for(const s of stations)refreshPhotoPreview(s.id,epoch);
+  }
+  function collectTextSettings(){
+    const result={introTitle:'',introText:'',stories:{}};
+    const introTitle=document.querySelector('[data-setting-key="introTitle"]'),introText=document.querySelector('[data-setting-key="introText"]');
+    for(const [el,label] of [[introTitle,'Heading'],[introText,'Introduction']])if(!el.value.trim()){$('settingsStatus').textContent=`${label} cannot be empty.`;el.focus();return null}
+    result.introTitle=introTitle.value;result.introText=introText.value;
+    for(const s of stations){result.stories[s.id]={};for(const key of ['short','title','kicker','text']){const el=document.querySelector(`[data-story-id="${s.id}"][data-story-field="${key}"]`);if(!el.value.trim()){el.closest('details').open=true;$('settingsStatus').textContent=`${s.code}: ${key} cannot be empty.`;el.focus();return null}result.stories[s.id][key]=el.value}}
+    return result;
+  }
+  function saveTextSettings(event){
+    event.preventDefault();const next=collectTextSettings();if(!next)return;
+    try{localStorage.setItem(TEXT_KEY,JSON.stringify(next))}catch{$('settingsStatus').textContent='Could not save in this browser. Check storage permissions.';return}
+    textState=next;applyTextSettings();updateProgress();buildSettingsForm();$('settingsStatus').textContent='Saved in this browser.';
+  }
+  function resetTextSettings(){
+    if(!window.confirm('Restore all introduction and chapter text to the original copy?'))return;
+    try{localStorage.removeItem(TEXT_KEY)}catch{$('settingsStatus').textContent='Could not clear browser storage.';return}
+    textState=JSON.parse(JSON.stringify(defaultText));applyTextSettings();updateProgress();buildSettingsForm();$('settingsStatus').textContent='Original text restored.';
+  }
+
   function typeStory(text){
     clearInterval(typeTimer);
     const el=$('storyText'),card=$('storyCard');
@@ -220,33 +324,24 @@
     const s=stations[index];if(!s)return;
     if(markVisited&&!visited.has(s.id)){visited.add(s.id);updateProgress();toast(`${s.short} visited`);}
     $('storyKicker').textContent=s.kicker;$('storyTitle').textContent=s.title;
-    openPanel($('storyPanel'));typeStory(s.text);$('storyTitle').focus?.();
+    openPanel($('storyPanel'));showStoryPhoto(s);typeStory(s.text);$('storyTitle').focus?.();
   }
   function openPanel(panel){closePanels();panel.hidden=false;paused=true;}
-  function closePanels(){clearInterval(typeTimer);typeTimer=0;$('storyCard').classList.remove('is-typing');panels.forEach(p=>p.hidden=true);paused=false;}
+  function closePanels(){clearInterval(typeTimer);typeTimer=0;$('storyCard').classList.remove('is-typing');clearStoryPhoto();panels.forEach(p=>p.hidden=true);paused=false;}
   function triggerTimeline(){
-    if(timelineIndex>=stations.length||nearIndex!==timelineIndex)return;
-    const index=timelineIndex++;openStory(index,true);
-    $('announcer').textContent=`Chapter ${index+1}: ${stations[index].title}.`;
+    const station=stations[timelineIndex];if(!station||player.distance<station.distance)return;
+    const index=timelineIndex++;openStory(index,true);$('announcer').textContent=`Checkpoint ${index+1}: ${stations[index].title}.`;
   }
-  function nearestStation(){
-    let idx=-1,best=2.35;
-    stations.forEach((s,i)=>{const d=Math.hypot(s.x-player.x,s.y-player.y);if(d<best){best=d;idx=i;}});
-    return idx;
-  }
-  function start(){playing=true;paused=false;$('intro').hidden=true;$('startButton').blur();nearIndex=nearestStation();toast('Starting at the beginning.');triggerTimeline();}
-  function reset(){visited.clear();player.x=0;player.y=0;nearIndex=-1;timelineIndex=0;closePanels();updateProgress();toast('Timeline restarted.');}
+  function start(){playing=true;paused=false;$('intro').hidden=true;$('startButton').blur();toast('The open road is yours.');triggerTimeline();}
+  function reset(){visited.clear();player.distance=0;player.lane=0;player.speed=0;nearIndex=-1;timelineIndex=0;closePanels();updateProgress();toast('Drive restarted.');}
   function move(dt){
-    const x=(pressed.has('ArrowRight')||pressed.has('d')||pressed.has('D')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')||pressed.has('A')?1:0);
-    const y=(pressed.has('ArrowDown')||pressed.has('s')||pressed.has('S')?1:0)-(pressed.has('ArrowUp')||pressed.has('w')||pressed.has('W')?1:0);
-    if(x||y){const mag=Math.hypot(x,y),speed=(pressed.has('Shift')?10:6.5)*dt;player.x+=x/mag*speed;player.y+=y/mag*speed;const sx=x-y,sy=x+y;player.angle=Math.atan2(sy,sx);player.x=Math.max(-22,Math.min(22,player.x));player.y=Math.max(-22,Math.min(22,player.y));}
-    const old=nearIndex;nearIndex=nearestStation();
-    $('connectButton').classList.toggle('is-ready',nearIndex>=0&&!visited.has(stations[nearIndex].id));
-    if(nearIndex>=0&&!visited.has(stations[nearIndex].id)){
-      $('connectButton').textContent=`Read ${stations[nearIndex].short} · Enter`;
-      if(old!==nearIndex){$('announcer').textContent=`${stations[nearIndex].title} in range.`;}
-    }
-    if(nearIndex<0||visited.has(stations[nearIndex].id))$('connectButton').classList.remove('is-ready');
+    const steer=(pressed.has('ArrowRight')||pressed.has('d')||pressed.has('D')?1:0)-(pressed.has('ArrowLeft')||pressed.has('a')||pressed.has('A')?1:0);
+    const accelerating=pressed.has('ArrowUp')||pressed.has('w')||pressed.has('W'),braking=pressed.has('ArrowDown')||pressed.has('s')||pressed.has('S');
+    const topSpeed=pressed.has('Shift')?340:260;
+    if(accelerating)player.speed=Math.min(topSpeed,player.speed+115*dt);else player.speed=Math.max(0,player.speed-(braking?220:22)*dt);
+    player.distance+=player.speed*dt/3.6;player.lane=Math.max(-.88,Math.min(.88,player.lane+steer*1.35*dt));
+    const next=stations[timelineIndex],remaining=next?next.distance-player.distance:Infinity;nearIndex=next&&remaining>=0&&remaining<130?timelineIndex:-1;
+    $('connectButton').classList.toggle('is-ready',nearIndex>=0);if(nearIndex>=0)$('connectButton').textContent=`Read ${next.short} · Enter`;
     triggerTimeline();
   }
   function keyDown(e){
@@ -269,6 +364,11 @@
   $('readButton').addEventListener('click',()=>{playing=true;$('intro').hidden=true;openPanel($('profilePanel'))});
   $('mapButton').addEventListener('click',()=>openPanel($('mapPanel')));
   $('profileButton').addEventListener('click',()=>openPanel($('profilePanel')));
+  $('settingsButton').addEventListener('click',()=>{buildSettingsForm();openPanel($('settingsPanel'))});
+  $('settingsForm').addEventListener('submit',saveTextSettings);
+  $('settingsStories').addEventListener('change',handlePhotoChange);
+  $('settingsStories').addEventListener('click',handlePhotoRemove);
+  $('resetTextButton').addEventListener('click',resetTextSettings);
   $('connectButton').addEventListener('click',()=>{if(nearIndex>=0)openStory(nearIndex,true)});
   $('storyMapButton').addEventListener('click',()=>openPanel($('mapPanel')));
   $('resetButton').addEventListener('click',reset);
@@ -277,7 +377,7 @@
   document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closePanels));
   let frame=0;
   function loop(now){const dt=Math.min((now-last)/1000||0,0.04);last=now;if(playing&&!paused)move(dt);draw(now);frame=requestAnimationFrame(loop)}
-  updateProgress();resize();frame=requestAnimationFrame(loop);
+  buildSettingsForm();updateProgress();resize();frame=requestAnimationFrame(loop);
 })();
 </script>
 </body>
