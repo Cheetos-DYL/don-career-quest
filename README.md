@@ -1,6 +1,6 @@
 # Charge Quest — Don Lee
 
-A small, self-contained career-timeline driving game based on a drive-to-discover portfolio pattern. Follow Don’s career from Mercedes-Benz (2016–2020) through Tesla (2020–2021), TMAP Mobility (2021–2023), and JLR (2023–present). Each chapter opens automatically when you reach its stop; the copy keeps the moves personal and conversational rather than turning them into a list of achievements.
+A small, self-contained life-timeline driving game inspired by the drive-to-discover approach in Bruno Simon’s Folio 2025. It follows 13 confirmed milestones from Don’s 1991 birth and childhood moves through Beijing, the United States, university, military service, Spain, France, Sweden, and his career at Mercedes-Benz, Tesla, TMAP Mobility, and JLR. Chapters open in order as the car reaches each stop; Paris and Stockholm remain relative to the events around them because exact years were not established.
 
 ## Test locally
 
