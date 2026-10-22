@@ -403,6 +403,15 @@ $('listButton').addEventListener('click', () => { closePanels(); renderStopList(
 $('aboutButton').addEventListener('click', () => { closePanels(); renderAbout(); $('aboutPanel').hidden = false; paused = true })
 
 // ── Editor + persistence ───────────────────────────────────────────────────
+let draftTimer = 0
+function persistDraft() {
+    clearTimeout(draftTimer)
+    draftTimer = setTimeout(() => {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(content))
+        $('editStatus').textContent = 'Draft saved in this browser (kept across refreshes).'
+    }, 400)
+}
+
 function buildEditor() {
     const fields = $('editFields')
     fields.replaceChildren()
@@ -414,7 +423,7 @@ function buildEditor() {
         const input = document.createElement(multiline ? 'textarea' : 'input')
         if (!multiline) input.type = 'text'
         input.value = value || ''
-        input.addEventListener('input', () => onInput(input.value))
+        input.addEventListener('input', () => { onInput(input.value); persistDraft() })
         label.append(span, input)
         fields.append(label)
     }
@@ -435,7 +444,7 @@ function buildEditor() {
             const input = document.createElement(multiline ? 'textarea' : 'input')
             if (!multiline) input.type = 'text'
             input.value = stop[key] || ''
-            input.addEventListener('input', () => (stop[key] = input.value))
+            input.addEventListener('input', () => { stop[key] = input.value; persistDraft() })
             label.append(span, input)
             inner.append(label)
         }
@@ -453,7 +462,8 @@ function buildEditor() {
             const file = photoInput.files?.[0]
             if (!file) return
             stop.photo = await fileToDataUrl(file)
-            $('editStatus').textContent = `Photo ready for ${stop.title}. Save, then Publish.`
+            persistDraft()
+            $('editStatus').textContent = `Photo ready for ${stop.title}. Draft saved.`
         })
         photoLabel.append(photoSpan, photoInput)
         inner.append(photoLabel)
