@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { parseStopYears, yearAt, stopDistance, roadLength as roadLen } from './years.js'
 
 // ── Content ────────────────────────────────────────────────────────────────
 const REPO = 'Cheetos-DYL/don-career-quest'
@@ -53,10 +54,7 @@ sun.shadow.camera.left = -140; sun.shadow.camera.right = 140
 sun.shadow.camera.top = 140; sun.shadow.camera.bottom = -140
 scene.add(sun)
 
-const STOP_SPACING = 800
-const RUNWAY = 450
-const stopDistance = i => RUNWAY + i * STOP_SPACING
-const roadLength = () => RUNWAY + (content.stops.length - 1) * STOP_SPACING + 600
+const roadLength = () => roadLen(content.stops.length)
 
 const box = (w, h, d, color, x = 0, y = 0, z = 0) => {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color }))
@@ -325,9 +323,8 @@ function move(dt) {
     })
     if (next >= 0 && !paused) openStory(next)
 
-    // year counter (even 1991→2023 across the drive)
-    const years = 32
-    const year = Math.min(2023, 1991 + Math.round((player.distance / roadLength()) * years))
+    // year counter: exactly each stone's year at every stop, in between interpolated
+    const year = yearAt(player.distance, move.years)
     if (year !== move.year) { move.year = year; drawYear(year); $('yearValue').textContent = year }
     $('speedValue').textContent = Math.round(player.speed)
 }
@@ -482,6 +479,7 @@ function fileToDataUrl(file) {
 }
 
 function applyContent() {
+    move.years = parseStopYears(content.stops)
     renderStopList()
     renderAbout()
     buildStones()
