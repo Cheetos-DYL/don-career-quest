@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071b20">
+<meta name="description" content="Drive through Don Lee's life story, from Korea and Beijing to EV charging across 70 markets.">
+<title>Don Lee — My Story</title>
+<link rel="icon" href="data:,">
+<style>
+:root{color-scheme:dark;--ink:#071b20;--surface:#102b30;--text:#f1f4e8;--muted:#a5b7ae;--lime:#c7f27a;--warm:#ffb86b;--shadow:0 18px 60px #031012a8;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--ink);color:var(--text)}
+button{font:inherit;color:inherit}button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hud{position:fixed;inset:0;pointer-events:none}.hud>*{pointer-events:auto}
+.topbar{position:absolute;inset:14px 16px auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px}.monogram{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--lime);color:var(--ink);font-weight:950;letter-spacing:-.06em}
+.brand-copy{display:grid;gap:1px}.brand-copy strong{font-size:.85rem;letter-spacing:.1em}.brand-copy small{color:var(--muted);font-size:.62rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.top-actions{display:flex;gap:7px}.icon-button{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #ffffff2a;border-radius:13px;background:#071b20c9;cursor:pointer;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.icon-button:hover{border-color:var(--lime);color:var(--lime)}
+.year-panel{position:absolute;left:16px;top:86px;padding:10px 16px;border:1px solid #ffffff26;border-radius:14px;background:#071b20e0}
+.year-panel .label{color:var(--muted);font-size:.6rem;font-weight:800;letter-spacing:.16em}
+#yearValue{font:900 2.1rem/1.1 ui-monospace,Menlo,monospace;color:var(--lime);letter-spacing:.06em}
+.speed{position:absolute;right:16px;top:86px;padding:10px 16px;border:1px solid #ffffff26;border-radius:14px;background:#071b20e0;text-align:right}
+.speed .label{color:var(--muted);font-size:.6rem;font-weight:800;letter-spacing:.16em}
+#speedValue{font:900 1.7rem/1.1 ui-monospace,Menlo,monospace;color:var(--warm)}
+.mission{position:absolute;left:16px;bottom:18px;width:min(330px,calc(100vw - 32px));padding:13px 15px;border:1px solid #ffffff26;border-radius:16px;background:#071b20e0;box-shadow:var(--shadow)}
+.mission .eyebrow{color:var(--muted);font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.mission h2{margin:5px 0 4px;font-size:.95rem;line-height:1.15}
+.mission p{margin:0;color:var(--muted);font-size:.76rem}
+.progress{height:5px;margin-top:10px;overflow:hidden;border-radius:5px;background:#ffffff1c}
+#progressBar{display:block;height:100%;width:0;background:var(--lime);transition:width .3s}
+.touch-controls{position:absolute;right:12px;bottom:12px;display:none;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:6px;touch-action:none}
+.touch-controls button{border:1px solid #ffffff38;border-radius:13px;background:#071b20c9;font-size:1.05rem;font-weight:900;touch-action:none;user-select:none}
+.touch-controls button.is-down{background:var(--lime);color:var(--ink)}
+.touch-controls [data-key="Shift"]{grid-column:3;grid-row:1;font-size:.62rem;letter-spacing:.02em}
+.panel{position:fixed;z-index:6;top:50%;left:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 28px));max-height:82vh;overflow:auto;border:1px solid #ffffff29;border-radius:22px;background:#0b2528f7;box-shadow:var(--shadow);padding:20px 22px}
+.panel[hidden]{display:none}
+.panel h2{margin:4px 0 10px;font-size:1.35rem;line-height:1.1}
+.panel .eyebrow{color:var(--warm);font-size:.68rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.panel p{color:#d7e2d8;font-size:.92rem;line-height:1.55}
+.close{position:absolute;right:12px;top:12px;min-width:40px;min-height:40px;border:1px solid #ffffff2a;border-radius:12px;background:#071b20c9;cursor:pointer;font-size:1.1rem}
+.story-photo{display:block;width:100%;max-height:250px;object-fit:cover;margin:10px 0;border-radius:12px}
+.story-photo[hidden]{display:none}
+.stop-list{display:grid;gap:8px;margin-top:8px}
+.stop-item{width:100%;display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;text-align:left;padding:10px 12px;border:1px solid #ffffff22;border-radius:12px;background:#ffffff08;cursor:pointer}
+.stop-item:hover{border-color:var(--lime)}
+.stop-num{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:#15343a;color:var(--lime);font-size:.72rem;font-weight:900}
+.stop-item strong{display:block;font-size:.85rem}.stop-item small{color:var(--muted);font-size:.7rem}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.fact{padding:10px 12px;border:1px solid #ffffff22;border-radius:12px;background:#ffffff08}
+.fact b{display:block;color:var(--lime);font-size:.66rem;letter-spacing:.12em}.fact span{font-size:.8rem;color:#d7e2d8}
+.edit-fields{display:grid;gap:12px;margin:12px 0}
+.edit-chapter{border:1px solid #ffffff26;border-radius:11px;padding:8px 12px}
+.edit-chapter summary{cursor:pointer;font-weight:900;font-size:.85rem}
+.edit-field{display:grid;gap:5px;font-size:.74rem;font-weight:800;color:var(--muted);margin:8px 0}
+.edit-field input,.edit-field textarea{width:100%;padding:9px 11px;border:1px solid #ffffff33;border-radius:9px;background:#0f1d22;color:var(--text);font:400 .92rem/1.5 system-ui,sans-serif}
+.edit-field textarea{min-height:110px;resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.primary,.secondary{min-height:44px;padding:0 16px;border-radius:12px;font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.primary{border:0;background:var(--lime);color:var(--ink)}.secondary{border:1px solid #ffffff33;background:#ffffff08}
+#editStatus{color:var(--muted);font-size:.78rem;min-height:1.2em}
+.toast{position:fixed;left:50%;top:74px;transform:translateX(-50%);z-index:9;padding:9px 14px;border:1px solid #ffffff2d;border-radius:999px;background:#071b20ee;font-size:.76rem;font-weight:800;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.visible{opacity:1}
+@media(max-width:760px){
+ .brand-copy small{display:none}.icon-button span{display:none}.mission{bottom:120px}.touch-controls{display:grid}
+ .year-panel{top:70px}.speed{top:70px}.panel{width:calc(100vw - 20px);max-height:78vh}
+}
+</style>
+</head>
+<body>
+<canvas id="world" role="img" aria-label="3D driving game: a life timeline road"></canvas>
+<div class="hud">
+  <header class="topbar">
+    <div class="brand"><span class="monogram">DL</span><span class="brand-copy"><strong>DON LEE</strong><small>MY STORY · 1991 TO NOW</small></span></div>
+    <div class="top-actions">
+      <button class="icon-button" id="listButton"><span>Stops</span>☷</button>
+      <button class="icon-button" id="aboutButton"><span>About</span>↗</button>
+      <button class="icon-button" id="editButton"><span>Edit</span>⚙</button>
+    </div>
+  </header>
+  <div class="year-panel"><div class="label">YEAR</div><div id="yearValue">1991</div></div>
+  <div class="speed"><div class="label">KM/H</div><div id="speedValue">0</div></div>
+  <section class="mission">
+    <div class="eyebrow">LIFE TIMELINE</div>
+    <h2 id="missionTitle">The beginning</h2>
+    <p id="missionText">Accelerate and drive through the years. Each stone is a stop.</p>
+    <div class="progress"><span id="progressBar"></span></div>
+  </section>
+  <div class="touch-controls">
+    <button data-key="Shift">BOOST</button>
+    <button data-key="ArrowUp">↑</button>
+    <button data-key="ArrowLeft">←</button>
+    <button data-key="ArrowDown">↓</button>
+    <button data-key="ArrowRight">→</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<section class="panel" id="storyPanel" hidden>
+  <button class="close" data-close aria-label="Close">×</button>
+  <div class="eyebrow" id="storyKicker"></div>
+  <h2 id="storyTitle"></h2>
+  <img class="story-photo" id="storyPhoto" hidden>
+  <p id="storyText"></p>
+</section>
+
+<section class="panel" id="listPanel" hidden>
+  <button class="close" data-close aria-label="Close">×</button>
+  <div class="eyebrow">ALL STOPS</div>
+  <h2>My story, in order</h2>
+  <div class="stop-list" id="stopList"></div>
+</section>
+
+<section class="panel" id="aboutPanel" hidden>
+  <button class="close" data-close aria-label="Close">×</button>
+  <div class="eyebrow">THE DRIVER</div>
+  <h2 id="aboutTitle">Don Lee</h2>
+  <p>EV charging partnerships across emerging markets — the commercial and product connections that make charging easier to find, access and use.</p>
+  <div class="facts" id="aboutFacts"></div>
+  <p style="color:#a5b7ae;font-size:.74rem">Timeline mechanic adapted from Bruno Simon's folio-2025 (MIT license). Drive with W/↑, brake S/↓, steer A/D, boost Shift.</p>
+</section>
+
+<section class="panel" id="editPanel" hidden>
+  <button class="close" data-close aria-label="Close">×</button>
+  <div class="eyebrow">PERSONALIZE</div>
+  <h2>Edit your story</h2>
+  <p style="color:#a5b7ae;font-size:.78rem">Edits save to this browser instantly. To publish them for every visitor, paste a GitHub token (fine-grained, this repo only, Contents: Read and write) and press Publish.</p>
+  <form id="editForm">
+    <div class="edit-fields" id="editFields"></div>
+    <label class="edit-field"><span>GitHub token (optional — publishes to the site)</span><input id="tokenInput" type="password" autocomplete="off"></label>
+    <div class="actions">
+      <button class="primary" type="submit">Save</button>
+      <button class="secondary" type="button" id="publishButton">Publish to site</button>
+      <button class="secondary" type="button" id="resetButton">Restore original</button>
+    </div>
+    <p id="editStatus"></p>
+  </form>
+</section>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
