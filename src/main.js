@@ -12,17 +12,23 @@ let publishedSha = null
 const $ = id => document.getElementById(id)
 
 async function loadContent() {
+    let local = null
     try {
-        const local = localStorage.getItem(CACHE_KEY)
-        if (local) content = JSON.parse(local)
+        const raw = localStorage.getItem(CACHE_KEY)
+        if (raw) local = JSON.parse(raw)
     } catch {}
+    if (local) content = local
     try {
         const res = await fetch('./content.json', { cache: 'no-store' })
         if (res.ok) {
             const remote = await res.json()
             if (remote && Array.isArray(remote.stops) && remote.stops.length) {
-                content = remote
-                localStorage.setItem(CACHE_KEY, JSON.stringify(remote))
+                // Local edits win until published or restored; the remote only seeds clean installs.
+                const localDirty = local && JSON.stringify(local) !== JSON.stringify(remote)
+                if (!localDirty) {
+                    content = remote
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(remote))
+                }
             }
         }
     } catch {}
@@ -500,29 +506,38 @@ function b64utf8(str) {
     return btoa(bin)
 }
 
+function gitMessage(status) {
+    if (status === 401) return 'GitHub 401: invalid token.'
+    if (status === 403) return 'GitHub 403: token is read-only here — edit the token permissions and set Contents to "Read and write".'
+    if (status === 404) return 'GitHub 404: token cannot see this repo.'
+    if (status === 409) return 'GitHub 409: the file changed elsewhere — try Publish again.'
+    return `GitHub ${status}`
+}
+
 async function publish() {
     const token = $('tokenInput').value.trim()
-    if (!token) { $('editStatus').textContent = 'Paste a GitHub token first (fine-grained, this repo, Contents: read/write).'; return }
+    if (!token) { $('editStatus').textContent = 'Paste a GitHub token first (fine-grained, this repo, Contents: Read and write).'; return }
     $('editStatus').textContent = 'Publishing…'
     const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }
+    const path = 'contents/public/content.json' // the file the site actually serves
     try {
         let sha = publishedSha
         if (!sha) {
-            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/content.json`, { headers })
+            const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, { headers })
             if (res.ok) sha = (await res.json()).sha
-            else if (res.status !== 404) throw new Error(`GitHub read failed (${res.status})`)
+            else if (res.status !== 404) throw new Error(gitMessage(res.status))
         }
         const body = { message: 'Update story content', content: b64utf8(JSON.stringify(content, null, 1)) }
         if (sha) body.sha = sha
-        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/content.json`, {
+        const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
             method: 'PUT', headers: { ...headers, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
         })
-        if (!res.ok) throw new Error(`GitHub write failed (${res.status})`)
+        if (!res.ok) throw new Error(gitMessage(res.status))
         publishedSha = (await res.json()).content?.sha || null
         $('editStatus').textContent = 'Published. The live site updates in about a minute.'
         toast('Published to the site')
     } catch (err) {
-        $('editStatus').textContent = `${err.message}. Edits are kept in this browser.`
+        $('editStatus').textContent = `${err.message} Edits are kept in this browser.`
     }
 }
 
